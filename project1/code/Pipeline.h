@@ -38,10 +38,16 @@ using namespace std;
 /// are to be modified by students.
 ///
 
+struct Polygon {
+    vector<Vertex> vertices;
+};
+
 class Pipeline : public Canvas {
 
 private:
     int npolys;   /// number of polygon models added to the pipeline
+    vector<Polygon> polys;
+    glm::mat3 tMatrix;
 
     // Add any private data members and member functions here
 
@@ -75,6 +81,8 @@ public:
     /// @param polyID - the ID of the polygon to be drawn.
     ///
     void drawPoly( int polyID );
+
+    void drawPolygon( int n, const Vertex p[] );
 
     ///
     /// clearTransform - Set the current transformation to the identity matrix.
