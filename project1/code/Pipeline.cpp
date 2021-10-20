@@ -55,7 +55,10 @@ int Pipeline::addPoly( int n, const Vertex p[] )
     Polygon newPoly;
     for (int i = 0; i < n; i++) {
         cout << i << " ";
-        newPoly.vertices.push_back(p[i]);
+        Vertex round;
+        round.x = floor(p[i].x + 0.5);
+        round.y = floor(p[i].y + 0.5);
+        newPoly.vertices.push_back(round);
     }
 
     cout << "\n";
@@ -91,8 +94,8 @@ void Pipeline::drawPoly( int polyID )
         v[i] = currentV[i];
     }
 
-    drawOutline(currentV.size(), v);
-    // drawPolygon(currentV.size(), v);
+    // drawOutline(currentV.size(), v);
+    drawPolygon(currentV.size(), v);
 }
 
 ///
