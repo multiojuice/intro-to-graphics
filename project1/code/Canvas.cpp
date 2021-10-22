@@ -120,6 +120,15 @@ void Canvas::clear( void )
     Color black = { 0.0f, 0.0f, 0.0f, 1.0f };
     currentColor = black;
     currentDepth = -1.0f;
+
+    // Midterm assignment additions
+    if( outlineCounts ) {
+        delete [] outlineCounts;
+        outlineCounts = 0;
+    }
+    outlineCounts = new int[countNumLimit];
+    drawingOutlines = false;
+    countNum = 0;
 }
 
 ///
