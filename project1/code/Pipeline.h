@@ -18,6 +18,7 @@
 #include <glm/vec3.hpp>
 #include <glm/mat3x3.hpp>
 #include <glm/geometric.hpp>
+#include <glm/gtx/string_cast.hpp>
 
 // a handy definition of PI
 #define MY_PI   3.141592654

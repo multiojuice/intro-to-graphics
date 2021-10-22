@@ -98,6 +98,8 @@ void Pipeline::drawPoly( int polyID )
         out[i] = currentV[i];
     }
 
+    cout << glm::to_string(this->tMatrix) << "\n";
+
     applyMatrix(currentV.size(), v, this->tMatrix);
 
     int outSize = clipPolygon(currentV.size(), v, out, this->lowerLeftClip, this->upperRightClip);
@@ -127,8 +129,9 @@ void Pipeline::clearTransform( void )
 ///
 void Pipeline::translate( float tx, float ty )
 {
+    cout << "\tTrans" << tx << " " << ty << "\n";
     glm::mat3 op = glm::mat3(1.0f);
-    op[2] = glm::vec3(tx, ty, 0.0);
+    op[2] = glm::vec3(tx, ty, 1.0);
     this->tMatrix = op * this->tMatrix;
 }
 
@@ -141,11 +144,13 @@ void Pipeline::translate( float tx, float ty )
 ///
 void Pipeline::rotate( float degrees )
 {
+    cout << "\tRot " << degrees << "\n";
     float PI = 3.14159265;
     glm::mat3 op = glm::mat3(1.0f);
     op[0] = glm::vec3(cos(degrees * PI / 180.0 ), sin(degrees * PI / 180.0 ), 0.0);
     op[1] = glm::vec3(-1 * sin(degrees * PI / 180.0 ), cos(degrees * PI / 180.0 ), 0.0);
     this->tMatrix = op * this->tMatrix;
+    cout << glm::to_string(this->tMatrix) << "\n";
 }
 
 ///
@@ -158,10 +163,12 @@ void Pipeline::rotate( float degrees )
 ///
 void Pipeline::scale( float sx, float sy )
 {
+    cout << "\tScale " << sx << " " << sy << "\n";
     glm::mat3 op = glm::mat3(1.0f);
     op[0] = glm::vec3(sx, 0.0, 0.0);
     op[1] = glm::vec3(0.0, sy, 0.0);
     this->tMatrix = op * this->tMatrix;
+    cout << glm::to_string(this->tMatrix) << "\n";
 }
 
 ///
