@@ -46,8 +46,17 @@ class Pipeline : public Canvas {
 
 private:
     int npolys;   /// number of polygon models added to the pipeline
-    vector<Polygon> polys;
-    glm::mat3 tMatrix;
+
+    vector<Polygon> polys; // Polygon repository
+
+    glm::mat3 tMatrix; // Transformation Matrix
+
+    Vertex lowerLeftClip;
+    Vertex upperRightClip;
+
+    Vertex lowerLeftView;
+    Vertex upperRightView;
+
 
     // Add any private data members and member functions here
 
@@ -140,4 +149,8 @@ public:
 
 };
 
+int clipPolygon( int num, const Vertex inV[], Vertex outV[],
+                 Vertex ll, Vertex ur );
+
 #endif
+
