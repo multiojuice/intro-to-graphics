@@ -57,6 +57,10 @@ private:
     Vertex lowerLeftView;
     Vertex upperRightView;
 
+    bool shouldClip;
+    bool shouldView;
+    bool shouldTransform;
+
 
     // Add any private data members and member functions here
 
@@ -147,7 +151,14 @@ public:
     ///
     void setViewport( int x, int y, int w, int h );
 
+
+    void applyViewport(int n, Vertex v[]);
+
 };
+
+void applyMatrix(int n, Vertex v[], glm::mat3 matrix);
+
+Vertex round(Vertex v);
 
 int clipPolygon( int num, const Vertex inV[], Vertex outV[],
                  Vertex ll, Vertex ur );

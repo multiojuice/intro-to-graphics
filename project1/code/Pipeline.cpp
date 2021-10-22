@@ -32,7 +32,19 @@
 Pipeline::Pipeline( int w, int h ) : Canvas(w,h)
     // YOUR IMPLEMENTATION HERE if you need to add initializers
 {
+    shouldClip = true;
+    shouldView = true;
+    shouldTransform = true;
     npolys = 0;   // initially, the repository is empty
+    lowerLeftClip.x = 0;
+    lowerLeftClip.y = 0;
+    upperRightClip.x = w;
+    upperRightClip.y = h;
+
+    lowerLeftView.x = 0;
+    lowerLeftView.y = 0;
+    upperRightView.x = w;
+    upperRightView.y = h;
 
     // YOUR IMPLEMENTATION HERE if you need to add other constructor code
 }
@@ -55,10 +67,8 @@ int Pipeline::addPoly( int n, const Vertex p[] )
     Polygon newPoly;
     for (int i = 0; i < n; i++) {
         cout << i << " ";
-        Vertex round;
-        round.x = floor(p[i].x + 0.5);
-        round.y = floor(p[i].y + 0.5);
-        newPoly.vertices.push_back(round);
+        Vertex clean = round(p[i]);
+        newPoly.vertices.push_back(clean);
     }
 
     cout << "\n";
@@ -89,17 +99,21 @@ void Pipeline::drawPoly( int polyID )
 
 
     Vertex v[currentV.size()]; 
+    Vertex out[currentV.size()]; 
     for (int i = 0; i < currentV.size(); i++) {
         cout << currentV[i].x << " " << currentV[i].y << "\n";
         v[i] = currentV[i];
+        out[i] = currentV[i];
     }
 
-    Vertex out[currentV.size()]; 
+    int outSize = currentV.size();
 
-    int outSize = clipPolygon(currentV.size(), v, out, this->lowerLeftClip, this->upperRightClip);
+    if (this->shouldClip) 
+        outSize = clipPolygon(currentV.size(), v, out, this->lowerLeftClip, this->upperRightClip);
 
+    if (this->shouldView)
+        applyViewport(outSize, out);
 
-    // drawOutline(currentV.size(), v);
     drawPolygon(outSize, out);
 }
 
@@ -108,6 +122,7 @@ void Pipeline::drawPoly( int polyID )
 ///
 void Pipeline::clearTransform( void )
 {
+    this->shouldTransform = false;
     glm::mat3 identityMatrix = glm::mat3(1.0f);
     this->tMatrix = identityMatrix;
 }
@@ -122,6 +137,7 @@ void Pipeline::clearTransform( void )
 ///
 void Pipeline::translate( float tx, float ty )
 {
+    this->shouldTransform = true;
     // YOUR IMPLEMENTATION HERE
 }
 
@@ -134,6 +150,7 @@ void Pipeline::translate( float tx, float ty )
 ///
 void Pipeline::rotate( float degrees )
 {
+    this->shouldTransform = true;
     // YOUR IMPLEMENTATION HERE
 }
 
@@ -147,6 +164,7 @@ void Pipeline::rotate( float degrees )
 ///
 void Pipeline::scale( float sx, float sy )
 {
+    this->shouldTransform = true;
     // YOUR IMPLEMENTATION HERE
 }
 
@@ -160,6 +178,7 @@ void Pipeline::scale( float sx, float sy )
 ///
 void Pipeline::setClipWindow( float bottom, float top, float left, float right )
 {
+    this->shouldClip = true;
     cout << "SET CLIP" << left << ", " << bottom << " | " << right << ", " << top << "\n";
     Vertex ll;
     ll.x = left;
@@ -168,14 +187,6 @@ void Pipeline::setClipWindow( float bottom, float top, float left, float right )
     Vertex ur;
     ur.x = right;
     ur.y = top;
-
-    // Vertex ll;
-    // ll.x = 0;
-    // ll.y = 0;
-
-    // Vertex ur;
-    // ur.x = 100000;
-    // ur.y = 100000;
 
     this->lowerLeftClip = ll;
     this->upperRightClip = ur;
@@ -191,6 +202,8 @@ void Pipeline::setClipWindow( float bottom, float top, float left, float right )
 ///
 void Pipeline::setViewport( int x, int y, int w, int h )
 {
+    cout << "SET View" << x << ", " << y << " | " << w << ", " << h << "\n";
+    this->shouldView = true;
     Vertex ll;
     ll.x = x;
     ll.y = y;
@@ -201,6 +214,36 @@ void Pipeline::setViewport( int x, int y, int w, int h )
 
     this->lowerLeftView = ll;
     this->upperRightView = ur;
+}
+
+void Pipeline::applyViewport(int n, Vertex v[]) {
+    float sx =  (this->upperRightView.x - this->lowerLeftView.x) / (this->upperRightClip.x - this->lowerLeftClip.x);
+    float sy = (this->upperRightView.y - this->lowerLeftView.y) / (this->upperRightClip.y - this->lowerLeftClip.y);
+    float tx = ((this->upperRightClip.x * this->lowerLeftView.x) - (this->lowerLeftClip.x * this->upperRightView.x)) 
+        / (this->upperRightClip.x - this->lowerLeftClip.x);
+    float ty = ((this->upperRightClip.y * this->lowerLeftView.y) - (this->lowerLeftClip.y * this->upperRightView.y)) 
+        / (this->upperRightClip.y - this->lowerLeftClip.y);
+
+    glm::mat3 viewTransform = glm::mat3(1.0f);
+    viewTransform[0] = glm::vec3( sx, 0.0, 0.0 );
+    viewTransform[1] = glm::vec3( 0.0, sy, 0.0 );
+    viewTransform[2] = glm::vec3( tx, ty, 1.0 );
+
+    // viewTransform[0] = glm::vec3( 2.0, 0.0, 0.0 );
+    // viewTransform[1] = glm::vec3( 0.0, 2.0, 0.0 );
+    // viewTransform[2] = glm::vec3( 0.0, 0.0, 1.0 );
+
+    applyMatrix(n, v, viewTransform);
+}
+
+void applyMatrix(int n, Vertex v[], glm::mat3 matrix) {
+    for (int i = 0; i < n; i++) {
+        glm::vec3 point = glm::vec3(v[i].x, v[i].y, 1.0);
+        glm::vec3 result = matrix * point;
+        v[i].x = result[0];
+        v[i].y = result[1];
+        v[i] = round(v[i]);
+    }
 }
 
 
@@ -554,4 +597,10 @@ int clipPolygon( int num, const Vertex inV[], Vertex outV[],
     return( count );  // remember to return the outgoing vertex count!
 }
 
+Vertex round(Vertex v) {
+    Vertex rounded;
+    rounded.x = floor(v.x + 0.5);
+    rounded.y = floor(v.y + 0.5);
 
+    return rounded;
+}
