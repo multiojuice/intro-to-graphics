@@ -57,11 +57,6 @@ private:
     Vertex lowerLeftView;
     Vertex upperRightView;
 
-    bool shouldClip;
-    bool shouldView;
-    bool shouldTransform;
-
-
     // Add any private data members and member functions here
 
 public:

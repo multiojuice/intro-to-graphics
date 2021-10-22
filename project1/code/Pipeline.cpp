@@ -11,6 +11,7 @@
 
 #include <iostream>
 #include "Pipeline.h"
+#include <math.h>       /* cos sin */
 
 ///
 /// Simple wrapper class for midterm assignment
@@ -30,11 +31,7 @@
 /// @param h height of canvas
 ///
 Pipeline::Pipeline( int w, int h ) : Canvas(w,h)
-    // YOUR IMPLEMENTATION HERE if you need to add initializers
 {
-    shouldClip = true;
-    shouldView = true;
-    shouldTransform = true;
     npolys = 0;   // initially, the repository is empty
     lowerLeftClip.x = 0;
     lowerLeftClip.y = 0;
@@ -46,7 +43,7 @@ Pipeline::Pipeline( int w, int h ) : Canvas(w,h)
     upperRightView.x = w;
     upperRightView.y = h;
 
-    // YOUR IMPLEMENTATION HERE if you need to add other constructor code
+    tMatrix = glm::mat3(1.0f);
 }
 
 ///
@@ -63,15 +60,11 @@ Pipeline::Pipeline( int w, int h ) : Canvas(w,h)
 ///
 int Pipeline::addPoly( int n, const Vertex p[] )
 {
-    cout << "Out of " << n << " :";
     Polygon newPoly;
     for (int i = 0; i < n; i++) {
-        cout << i << " ";
         Vertex clean = round(p[i]);
         newPoly.vertices.push_back(clean);
     }
-
-    cout << "\n";
 
     this->polys.push_back(newPoly);
     npolys++;
@@ -94,25 +87,23 @@ void Pipeline::drawPoly( int polyID )
         return;
     }
 
-    cerr << "drawPoly(" << polyID << "), size " << this->polys.size() << endl;
     vector<Vertex> currentV = this->polys[polyID].vertices;
+    cerr << "drawPoly(" << polyID << "), size " << currentV.size() << endl;
 
 
     Vertex v[currentV.size()]; 
     Vertex out[currentV.size()]; 
     for (int i = 0; i < currentV.size(); i++) {
-        cout << currentV[i].x << " " << currentV[i].y << "\n";
         v[i] = currentV[i];
         out[i] = currentV[i];
     }
 
-    int outSize = currentV.size();
+    applyMatrix(currentV.size(), v, this->tMatrix);
 
-    if (this->shouldClip) 
-        outSize = clipPolygon(currentV.size(), v, out, this->lowerLeftClip, this->upperRightClip);
+    int outSize = clipPolygon(currentV.size(), v, out, this->lowerLeftClip, this->upperRightClip);
+    cout << outSize << "\n";
 
-    if (this->shouldView)
-        applyViewport(outSize, out);
+    applyViewport(outSize, out);
 
     drawPolygon(outSize, out);
 }
@@ -122,9 +113,8 @@ void Pipeline::drawPoly( int polyID )
 ///
 void Pipeline::clearTransform( void )
 {
-    this->shouldTransform = false;
-    glm::mat3 identityMatrix = glm::mat3(1.0f);
-    this->tMatrix = identityMatrix;
+    cout << "CLEAR MATRIX \n";
+    this->tMatrix = glm::mat3(1.0f);
 }
 
 ///
@@ -137,8 +127,9 @@ void Pipeline::clearTransform( void )
 ///
 void Pipeline::translate( float tx, float ty )
 {
-    this->shouldTransform = true;
-    // YOUR IMPLEMENTATION HERE
+    glm::mat3 op = glm::mat3(1.0f);
+    op[2] = glm::vec3(tx, ty, 0.0);
+    this->tMatrix = op * this->tMatrix;
 }
 
 ///
@@ -150,8 +141,11 @@ void Pipeline::translate( float tx, float ty )
 ///
 void Pipeline::rotate( float degrees )
 {
-    this->shouldTransform = true;
-    // YOUR IMPLEMENTATION HERE
+    float PI = 3.14159265;
+    glm::mat3 op = glm::mat3(1.0f);
+    op[0] = glm::vec3(cos(degrees * PI / 180.0 ), sin(degrees * PI / 180.0 ), 0.0);
+    op[1] = glm::vec3(-1 * sin(degrees * PI / 180.0 ), cos(degrees * PI / 180.0 ), 0.0);
+    this->tMatrix = op * this->tMatrix;
 }
 
 ///
@@ -164,8 +158,10 @@ void Pipeline::rotate( float degrees )
 ///
 void Pipeline::scale( float sx, float sy )
 {
-    this->shouldTransform = true;
-    // YOUR IMPLEMENTATION HERE
+    glm::mat3 op = glm::mat3(1.0f);
+    op[0] = glm::vec3(sx, 0.0, 0.0);
+    op[1] = glm::vec3(0.0, sy, 0.0);
+    this->tMatrix = op * this->tMatrix;
 }
 
 ///
@@ -178,8 +174,7 @@ void Pipeline::scale( float sx, float sy )
 ///
 void Pipeline::setClipWindow( float bottom, float top, float left, float right )
 {
-    this->shouldClip = true;
-    cout << "SET CLIP" << left << ", " << bottom << " | " << right << ", " << top << "\n";
+    cout << "SET CLIP:" << left << ", " << bottom << " | " << right << ", " << top << "\n";
     Vertex ll;
     ll.x = left;
     ll.y = bottom;
@@ -202,8 +197,6 @@ void Pipeline::setClipWindow( float bottom, float top, float left, float right )
 ///
 void Pipeline::setViewport( int x, int y, int w, int h )
 {
-    cout << "SET View" << x << ", " << y << " | " << w << ", " << h << "\n";
-    this->shouldView = true;
     Vertex ll;
     ll.x = x;
     ll.y = y;
@@ -245,8 +238,6 @@ void applyMatrix(int n, Vertex v[], glm::mat3 matrix) {
         v[i] = round(v[i]);
     }
 }
-
-
 
 
 /*********************************************
