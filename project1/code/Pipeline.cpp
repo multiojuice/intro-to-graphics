@@ -9,8 +9,11 @@
 //  Contributor:  Owen Sullivan
 //
 
-#include <iostream>
 #include "Pipeline.h"
+
+#include <iostream>
+#include <list>
+#include <algorithm>
 #include <math.h>       /* cos sin */
 
 ///
