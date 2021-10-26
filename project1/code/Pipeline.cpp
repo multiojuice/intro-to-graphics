@@ -19,7 +19,6 @@
 /// Only methods in the implementation file whose bodies
 /// contain the comment
 ///
-///    // YOUR IMPLEMENTATION HERE
 ///
 /// are to be modified by students.
 ///
@@ -32,12 +31,13 @@
 ///
 Pipeline::Pipeline( int w, int h ) : Canvas(w,h)
 {
-    npolys = 0;   // initially, the repository is empty
+    npolys = 0;
+    // Starting def of clip window
     lowerLeftClip.x = 0;
     lowerLeftClip.y = 0;
     upperRightClip.x = w;
     upperRightClip.y = h;
-
+    // Starting def of view window
     lowerLeftView.x = 0;
     lowerLeftView.y = 0;
     upperRightView.x = w;
@@ -60,15 +60,19 @@ Pipeline::Pipeline( int w, int h ) : Canvas(w,h)
 ///
 int Pipeline::addPoly( int n, const Vertex p[] )
 {
+    // Init a new polygon
     Polygon newPoly;
+    // Clean the points and add to polygon
     for (int i = 0; i < n; i++) {
         Vertex clean = round(p[i]);
         newPoly.vertices.push_back(clean);
     }
 
+    // Add to repository
     this->polys.push_back(newPoly);
     npolys++;
 
+    // Index as ID
     return this->polys.size() - 1;
 }
 
@@ -87,26 +91,28 @@ void Pipeline::drawPoly( int polyID )
         return;
     }
 
+    // Get the polygons starting vertices
     vector<Vertex> currentV = this->polys[polyID].vertices;
-    cerr << "drawPoly(" << polyID << "), size " << currentV.size() << endl;
 
-
+    // Init arrays
     Vertex v[currentV.size()]; 
     Vertex out[currentV.size()]; 
+    // set arrays for manipulating
     for (int i = 0; i < currentV.size(); i++) {
         v[i] = currentV[i];
         out[i] = currentV[i];
     }
 
-    cout << glm::to_string(this->tMatrix) << "\n";
-
+    // Apply the transformation matrix to each point
     applyMatrix(currentV.size(), v, this->tMatrix);
 
+    // Clip the polygon into new array
     int outSize = clipPolygon(currentV.size(), v, out, this->lowerLeftClip, this->upperRightClip);
-    cout << outSize << "\n";
 
+    // Apply viewport to clipped points
     applyViewport(outSize, out);
 
+    // Draw final points
     drawPolygon(outSize, out);
 }
 
@@ -115,7 +121,7 @@ void Pipeline::drawPoly( int polyID )
 ///
 void Pipeline::clearTransform( void )
 {
-    cout << "CLEAR MATRIX \n";
+    // set matrix to identity
     this->tMatrix = glm::mat3(1.0f);
 }
 
@@ -129,9 +135,10 @@ void Pipeline::clearTransform( void )
 ///
 void Pipeline::translate( float tx, float ty )
 {
-    cout << "\tTrans" << tx << " " << ty << "\n";
+    // Translate matrix
     glm::mat3 op = glm::mat3(1.0f);
     op[2] = glm::vec3(tx, ty, 1.0);
+    // Apply to existing transformation matrix
     this->tMatrix = op * this->tMatrix;
 }
 
@@ -144,13 +151,13 @@ void Pipeline::translate( float tx, float ty )
 ///
 void Pipeline::rotate( float degrees )
 {
-    cout << "\tRot " << degrees << "\n";
     float PI = 3.14159265;
     glm::mat3 op = glm::mat3(1.0f);
+    // Create rot matrix
     op[0] = glm::vec3(cos(degrees * PI / 180.0 ), sin(degrees * PI / 180.0 ), 0.0);
     op[1] = glm::vec3(-1 * sin(degrees * PI / 180.0 ), cos(degrees * PI / 180.0 ), 0.0);
+    // Apply to existing transformation matrix
     this->tMatrix = op * this->tMatrix;
-    cout << glm::to_string(this->tMatrix) << "\n";
 }
 
 ///
@@ -163,12 +170,12 @@ void Pipeline::rotate( float degrees )
 ///
 void Pipeline::scale( float sx, float sy )
 {
-    cout << "\tScale " << sx << " " << sy << "\n";
+    // Create scale matrix
     glm::mat3 op = glm::mat3(1.0f);
     op[0] = glm::vec3(sx, 0.0, 0.0);
     op[1] = glm::vec3(0.0, sy, 0.0);
+    // Apply to existing transformation matrix
     this->tMatrix = op * this->tMatrix;
-    cout << glm::to_string(this->tMatrix) << "\n";
 }
 
 ///
@@ -181,7 +188,7 @@ void Pipeline::scale( float sx, float sy )
 ///
 void Pipeline::setClipWindow( float bottom, float top, float left, float right )
 {
-    cout << "SET CLIP:" << left << ", " << bottom << " | " << right << ", " << top << "\n";
+    // Set lowerleft and upper right clip vertices
     Vertex ll;
     ll.x = left;
     ll.y = bottom;
@@ -204,6 +211,7 @@ void Pipeline::setClipWindow( float bottom, float top, float left, float right )
 ///
 void Pipeline::setViewport( int x, int y, int w, int h )
 {
+    // Set lowerleft and upper right view vertices
     Vertex ll;
     ll.x = x;
     ll.y = y;
@@ -216,6 +224,11 @@ void Pipeline::setViewport( int x, int y, int w, int h )
     this->upperRightView = ur;
 }
 
+/**
+ * applyViewPort takes in number of verts and the vertices
+ * This creates and applies a viewport tranformation matrix to 
+ * each vertice and manipulates it in place
+ */
 void Pipeline::applyViewport(int n, Vertex v[]) {
     float sx =  (this->upperRightView.x - this->lowerLeftView.x) / (this->upperRightClip.x - this->lowerLeftClip.x);
     float sy = (this->upperRightView.y - this->lowerLeftView.y) / (this->upperRightClip.y - this->lowerLeftClip.y);
@@ -229,13 +242,15 @@ void Pipeline::applyViewport(int n, Vertex v[]) {
     viewTransform[1] = glm::vec3( 0.0, sy, 0.0 );
     viewTransform[2] = glm::vec3( tx, ty, 1.0 );
 
-    // viewTransform[0] = glm::vec3( 2.0, 0.0, 0.0 );
-    // viewTransform[1] = glm::vec3( 0.0, 2.0, 0.0 );
-    // viewTransform[2] = glm::vec3( 0.0, 0.0, 1.0 );
-
     applyMatrix(n, v, viewTransform);
 }
 
+
+/**
+ * applyMatrix takes in number of verts and the vertices and a matrix to apply
+ * This applies a given matrix m to 
+ * each vertice and manipulates it in place
+ */
 void applyMatrix(int n, Vertex v[], glm::mat3 matrix) {
     for (int i = 0; i < n; i++) {
         glm::vec3 point = glm::vec3(v[i].x, v[i].y, 1.0);
@@ -595,6 +610,12 @@ int clipPolygon( int num, const Vertex inV[], Vertex outV[],
     return( count );  // remember to return the outgoing vertex count!
 }
 
+/**
+ * Rounds a vertice up or down depending on
+ * what int is closest.
+ * Without this, my draw polygon doesn't work
+ * Because I use int inputs and sloping
+ */
 Vertex round(Vertex v) {
     Vertex rounded;
     rounded.x = floor(v.x + 0.5);

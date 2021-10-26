@@ -6,7 +6,7 @@
 //  Updates: 2019/02/25, 2019/10/01, 2021/10/03 by wrc.
 //  Copyright 2021 Rochester Institute of Technology. All rights reserved.
 //
-//  Contributor:  YOUR_NAME_HERE
+//  Contributor:  Owen Sullivan
 //
 
 #ifndef PIPELINE_H_
@@ -28,20 +28,20 @@
 
 using namespace std;
 
+// A struct that represents a polygon aka the vertices 
+struct Polygon {
+    vector<Vertex> vertices;
+};
+
 ///
 /// Simple wrapper class for midterm assignment
 ///
 /// Only methods in the implementation file whose bodies
 /// contain the comment
 ///
-///    // YOUR IMPLEMENTATION HERE
 ///
 /// are to be modified by students.
 ///
-
-struct Polygon {
-    vector<Vertex> vertices;
-};
 
 class Pipeline : public Canvas {
 
@@ -52,13 +52,12 @@ private:
 
     glm::mat3 tMatrix; // Transformation Matrix
 
+    // Vertices on outer edge of clip rectangle
     Vertex lowerLeftClip;
     Vertex upperRightClip;
-
+    // Vertices on outer edge of view rectangle
     Vertex lowerLeftView;
     Vertex upperRightView;
-
-    // Add any private data members and member functions here
 
 public:
 
@@ -91,6 +90,22 @@ public:
     ///
     void drawPoly( int polyID );
 
+    ///
+    /// Draw a filled polygon.
+    ///
+    /// Implementation should use the scan-line polygon fill algorithm
+    /// discussed in class.
+    ///
+    /// The polygon has n distinct vertices.  The coordinates of the vertices
+    /// making up the polygon are supplied in the 'v' array parameter, such
+    /// that the ith vertex is in v[i].
+    ///
+    /// You are to add the implementation here using only calls to the
+    /// addPixel() function.
+    ///
+    /// @param n - number of vertices
+    /// @param v - array of vertices
+    ///
     void drawPolygon( int n, const Vertex p[] );
 
     ///
@@ -148,14 +163,50 @@ public:
     void setViewport( int x, int y, int w, int h );
 
 
+    /**
+     * applyViewPort takes in number of verts and the vertices
+     * This creates and applies a viewport tranformation matrix to 
+     * each vertice and manipulates it in place
+     * @param n - num of verts
+     * @param v - vertices to apply to
+     */
     void applyViewport(int n, Vertex v[]);
 
 };
 
+/**
+ * applyMatrix takes in number of verts and the vertices and a matrix to apply
+ * This applies a given matrix m to 
+ * each vertice and manipulates it in place
+ */
 void applyMatrix(int n, Vertex v[], glm::mat3 matrix);
 
+/**
+ * Rounds a vertice up or down depending on
+ * what int is closest.
+ * Without this, my draw polygon doesn't work
+ * Because I use int inputs and sloping
+ */
 Vertex round(Vertex v);
 
+///
+/// clipPolygon
+///
+/// Clip the polygon with vertex count in and vertices inV against the
+/// rectangular clipping region specified by lower-left corner ll and
+/// upper-right corner ur. The resulting vertices are placed in outV.
+///
+/// The routine should return the with the vertex count of polygon
+/// resulting from the clipping.
+///
+/// @param num   the number of vertices in the polygon to be clipped
+/// @param inV   the incoming vertex list
+/// @param outV  the outgoing vertex list
+/// @param ll    the lower-left corner of the clipping rectangle
+/// @param ur    the upper-right corner of the clipping rectangle
+///
+/// @return number of vertices in the polygon resulting after clipping
+///
 int clipPolygon( int num, const Vertex inV[], Vertex outV[],
                  Vertex ll, Vertex ur );
 
