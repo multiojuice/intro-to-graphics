@@ -1,0 +1,64 @@
+#!/bin/sh
+#
+# compilation script for Mac systems
+#
+
+#
+# Set these strings to the locations of the GLEW and GLFW header
+# and library directories, depending upon your installation.  If
+# you are using MacPorts, these are probably already set correctly;
+# if you're using Homebrew, you should probably change /opt/local
+# to /usr/local in both of them.  If you've installed GLEW and/or
+# GLFW somewhere else, you'll have to change them accordingly.
+#
+
+incs="-I/opt/local/include"
+libs="-L/opt/local/lib -lglfw -lglew"
+
+#
+# This variable contains the list of frameworks you'll need to
+# compile and link against.
+#
+
+fmwks="-framework OpenGL -framework Cocoa -framework IOKit -framework CoreVideo"
+
+#
+# Set the target; we assume that a target of "foo" will
+# be compiled from either foo.c or foo.cpp
+#
+
+target="main"
+
+#
+# Turn off the "OpenGL is deprecated!" hysteria from the compiler
+#
+flags="-DGL_SILENCE_DEPRECATION"
+
+#
+# Determine which language we're compiling
+#
+
+if [ -f $target.c ]
+then
+	cmd="gcc -std=c99"
+	files="*.c"
+else
+	cmd="g++"
+	files="*.cpp"
+fi
+
+#
+# If there were command-line arguments, use them to override the default set.
+#
+
+if [ $# -gt 0 ]
+then
+	args="$*"
+else
+	args="-ggdb -o $target"
+fi
+
+# turn on tracing so we see the compilation command
+set -x
+
+$cmd $incs $flags $args $files $libs $fmwks
