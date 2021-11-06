@@ -62,21 +62,22 @@ static GLfloat bounds[] = { -1.0f, 1.0f, 1.0f, -1.0f, 0.9f, 4.5f };
 ///
 void setProjection( GLuint program, ViewMode mode )
 {
-        GLint leftLoc = glGetUniformLocation(program, "left");
-        glUniform1f(leftLoc, bounds[0]);
-        GLint rightLoc = glGetUniformLocation(program, "right");
-        glUniform1f(rightLoc, bounds[1]);
-        GLint topLoc = glGetUniformLocation(program, "top");
-        glUniform1f(topLoc, bounds[2]);
-        GLint bottomLoc = glGetUniformLocation(program, "bottom");
-        glUniform1f(bottomLoc, bounds[3]);
-        GLint nearLoc = glGetUniformLocation(program, "near");
-        glUniform1f(nearLoc, bounds[4]);
-        GLint farLoc = glGetUniformLocation(program, "far");
-        glUniform1f(farLoc, bounds[5]);
+    // Simply pass the info to the shader
+    GLint leftLoc = glGetUniformLocation(program, "left");
+    glUniform1f(leftLoc, bounds[0]);
+    GLint rightLoc = glGetUniformLocation(program, "right");
+    glUniform1f(rightLoc, bounds[1]);
+    GLint topLoc = glGetUniformLocation(program, "top");
+    glUniform1f(topLoc, bounds[2]);
+    GLint bottomLoc = glGetUniformLocation(program, "bottom");
+    glUniform1f(bottomLoc, bounds[3]);
+    GLint nearLoc = glGetUniformLocation(program, "near");
+    glUniform1f(nearLoc, bounds[4]);
+    GLint farLoc = glGetUniformLocation(program, "far");
+    glUniform1f(farLoc, bounds[5]);
 
-        GLint viewmodeLoc = glGetUniformLocation(program, "viewmode");
-        glUniform1f(viewmodeLoc, mode == Frustum ? 1 : 0);
+    GLint viewmodeLoc = glGetUniformLocation(program, "viewmode");
+    glUniform1f(viewmodeLoc, mode == Frustum ? 1 : 0);
 }
 
 ///
@@ -93,6 +94,7 @@ void setProjection( GLuint program, ViewMode mode )
 ///
 void setTransforms( GLuint program, XformMode mode )
 {
+    // Simply pass the info to the shader based on the trans mode
     GLint scaleLoc = glGetUniformLocation( program, "scale" );
     GLint translateLoc = glGetUniformLocation( program, "translate" );
     GLint rotateLoc = glGetUniformLocation( program, "rotate" );
@@ -122,6 +124,7 @@ void setTransforms( GLuint program, XformMode mode )
 ///
 void setCamera( GLuint program, CamMode mode )
 {
+    // // Simply pass the info to the shader based on camera mode
     GLint eyeLoc = glGetUniformLocation( program, "eye" );
     GLint lookatLoc = glGetUniformLocation( program, "lookat" );
     GLint upLoc = glGetUniformLocation( program, "up" );
