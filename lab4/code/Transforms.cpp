@@ -9,7 +9,7 @@
 //  Based on code created by Joe Geigel on 1/23/13.
 //  Copyright 2021 Rochester Institute of Technology.  All rights reserved.
 //
-//  Contributor:  YOUR_NAME_HERE
+//  Contributor:  Owen Sullivan
 ///
 
 #if defined(_WIN32) || defined(_WIN64)
@@ -62,7 +62,21 @@ static GLfloat bounds[] = { -1.0f, 1.0f, 1.0f, -1.0f, 0.9f, 4.5f };
 ///
 void setProjection( GLuint program, ViewMode mode )
 {
-    // Add your code here.
+        GLint leftLoc = glGetUniformLocation(program, "left");
+        glUniform1f(leftLoc, bounds[0]);
+        GLint rightLoc = glGetUniformLocation(program, "right");
+        glUniform1f(rightLoc, bounds[1]);
+        GLint topLoc = glGetUniformLocation(program, "top");
+        glUniform1f(topLoc, bounds[2]);
+        GLint bottomLoc = glGetUniformLocation(program, "bottom");
+        glUniform1f(bottomLoc, bounds[3]);
+        GLint nearLoc = glGetUniformLocation(program, "near");
+        glUniform1f(nearLoc, bounds[4]);
+        GLint farLoc = glGetUniformLocation(program, "far");
+        glUniform1f(farLoc, bounds[5]);
+
+        GLint viewmodeLoc = glGetUniformLocation(program, "viewmode");
+        glUniform1f(viewmodeLoc, mode == Frustum ? 1 : 0);
 }
 
 ///
@@ -79,7 +93,20 @@ void setProjection( GLuint program, ViewMode mode )
 ///
 void setTransforms( GLuint program, XformMode mode )
 {
-    // Add your code here.
+    GLint scaleLoc = glGetUniformLocation( program, "scale" );
+    GLint translateLoc = glGetUniformLocation( program, "translate" );
+    GLint rotateLoc = glGetUniformLocation( program, "rotate" );
+
+    if (mode == Off) {
+        glUniform3f(scaleLoc, std_scale[0], std_scale[1], std_scale[2]);
+        glUniform3f(translateLoc, std_xlate[0], std_xlate[1], std_xlate[2]);
+        glUniform3f(rotateLoc, std_rotate[0], std_rotate[1], std_rotate[2]);
+    } else {
+        glUniform3f(scaleLoc, alt_scale[0], alt_scale[1], alt_scale[2]);
+        glUniform3f(translateLoc, alt_xlate[0], alt_xlate[1], alt_xlate[2]);
+        glUniform3f(rotateLoc, alt_rotate[0], alt_rotate[1], alt_rotate[2]);
+    }
+
 }
 
 ///
@@ -95,5 +122,17 @@ void setTransforms( GLuint program, XformMode mode )
 ///
 void setCamera( GLuint program, CamMode mode )
 {
-    // Add your code here.
+    GLint eyeLoc = glGetUniformLocation( program, "eye" );
+    GLint lookatLoc = glGetUniformLocation( program, "lookat" );
+    GLint upLoc = glGetUniformLocation( program, "up" );
+
+    if (mode == Camera1) {
+        glUniform3f(eyeLoc, cam1_eye[0], cam1_eye[1], cam1_eye[2]);
+        glUniform3f(lookatLoc, cam1_lookat[0], cam1_lookat[1], cam1_lookat[2]);
+        glUniform3f(upLoc, cam1_up[0], cam1_up[1], cam1_up[2]);
+    } else {
+        glUniform3f(eyeLoc, cam2_eye[0], cam2_eye[1], cam2_eye[2]);
+        glUniform3f(lookatLoc, cam2_lookat[0], cam2_lookat[1], cam2_lookat[2]);
+        glUniform3f(upLoc, cam2_up[0], cam2_up[1], cam2_up[2]);
+    }
 }
