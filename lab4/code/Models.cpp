@@ -164,7 +164,7 @@ static Vertex teapotVertices[]= {
   {  0.324769,  0.487311, -0.216446 }
 };
 
-static int numTeapotVertices= sizeof(teapotVertices) / sizeof(float);
+static int numTeapotVertices= sizeof(teapotVertices) / sizeof(Vertex);
 
 //
 // Connectivity data for the teapot.

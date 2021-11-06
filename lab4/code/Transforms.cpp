@@ -27,14 +27,14 @@
 using namespace std;
 
 // camera position 1
-static GLfloat std_eye[] =    { 0.0f, 0.0f,  0.0f };
-static GLfloat std_lookat[] = { 0.0f, 0.0f, -1.0f };
-static GLfloat std_up[] =     { 0.0f, 1.0f,  0.0f };
+static GLfloat cam1_eye[] =    { 0.0f, 0.0f,  0.0f };
+static GLfloat cam1_lookat[] = { 0.0f, 0.0f, -1.0f };
+static GLfloat cam1_up[] =     { 0.0f, 1.0f,  0.0f };
 
 // camera position 2
-static GLfloat alt_eye[] =    { 0.0f,  1.3f, -0.5f };
-static GLfloat alt_lookat[] = { 0.0f, -0.4f, -1.0f };
-static GLfloat alt_up[] =     { 0.0f,  1.0f,  0.0f };
+static GLfloat cam2_eye[] =    { 0.0f,  1.3f, -0.5f };
+static GLfloat cam2_lookat[] = { 0.0f, -0.4f, -1.0f };
+static GLfloat cam2_up[] =     { 0.0f,  1.0f,  0.0f };
 
 // default transformations
 static GLfloat std_scale[] =  { 1.0f, 1.0f, 1.0f };
