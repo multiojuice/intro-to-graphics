@@ -38,7 +38,8 @@ const char *objects[ N_SHAPES ] = {
  * in a vertex and returns the result
  */
 Vertex averageVertex(Vertex p1, Vertex p2) {
-    return {(p1.x + p2.x) / 2, (p1.y + p2.y) / 2, (p1.z + p2.z) / 2};
+    Vertex a = {(p1.x + p2.x) / 2, (p1.y + p2.y) / 2, (p1.z + p2.z) / 2};
+    return a;
 }
 
 /**
@@ -136,7 +137,7 @@ static void createCone( Canvas &C, float radius, int disc, int height )
 
         // Calculate each point in the current layer
         for (int i = 0; i < disc; i ++ ) {
-            Vertex curr = { current_radius * sin(deg * i * 0.0174533), current_radius * cos(deg * i * 0.0174533), current_height};
+            Vertex curr = { current_radius * (float) sin(deg * i * 0.0174533), current_radius * (float) cos(deg * i * 0.0174533), current_height};
             // Save for later use
             v[j][i] = curr;
         }
