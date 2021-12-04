@@ -80,19 +80,19 @@ t
     glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, reverseTexture);
 
-    // Load in back of coin
-    GLuint discTexture = SOIL_load_OGL_texture(
-        "disc.png",
-        SOIL_LOAD_AUTO,
-        SOIL_CREATE_NEW_ID,
-        SOIL_FLAG_INVERT_Y | SOIL_FLAG_TEXTURE_REPEATS);
+    // // Load in back of coin
+    // GLuint discTexture = SOIL_load_OGL_texture(
+    //     "disc.png",
+    //     SOIL_LOAD_AUTO,
+    //     SOIL_CREATE_NEW_ID,
+    //     SOIL_FLAG_INVERT_Y | SOIL_FLAG_TEXTURE_REPEATS);
 
-            // Load in back of coin
-    GLuint wallTexture = SOIL_load_OGL_texture(
-        "reverse.png",
-        SOIL_LOAD_AUTO,
-        SOIL_CREATE_NEW_ID,
-        SOIL_FLAG_INVERT_Y | SOIL_FLAG_TEXTURE_REPEATS);
+    //         // Load in back of coin
+    // GLuint wallTexture = SOIL_load_OGL_texture(
+    //     "reverse.png",
+    //     SOIL_LOAD_AUTO,
+    //     SOIL_CREATE_NEW_ID,
+    //     SOIL_FLAG_INVERT_Y | SOIL_FLAG_TEXTURE_REPEATS);
 
     // // Assign front of coin to 0
     // glActiveTexture(GL_TEXTURE2);
