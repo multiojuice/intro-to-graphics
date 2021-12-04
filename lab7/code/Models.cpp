@@ -46,7 +46,6 @@ const char *objects[ N_OBJECTS ] = {
 //
 // PRIVATE FUNCTIONS
 //
-
 TexCoord convertVertexToTexCoordCyl(Vertex vertex) {
     float phi = atan(vertex.x / vertex.z);
 
@@ -55,13 +54,10 @@ TexCoord convertVertexToTexCoordCyl(Vertex vertex) {
     return tc;
 }
 
-
 TexCoord convertVertexToTexCoordDisc(Vertex vertex) {
     TexCoord tc = {vertex.x + .5, 1 - vertex.z + .5};
     return tc;
 }
-
-
 
 
 ///
