@@ -54,7 +54,7 @@ const char *objects[ N_OBJECTS ] = {
 TexCoord convertVertexToTexCoordCyl(Vertex vertex) {
     float phi = atan(vertex.x / vertex.z);
 
-    TexCoord tc = {(phi/(2 * PI)) + .5, ((vertex.y + 1) / 2) + .5};
+    TexCoord tc = {(phi/(2 * PI)), (vertex.y + 1) / 2};
     return tc;
 }
 
