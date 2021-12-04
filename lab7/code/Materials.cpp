@@ -58,6 +58,8 @@ static glm::vec4 quad_ambdiffuse( 0.10f, 0.85f, 0.20f, 1.00f );
 void initTextures( void )
 {
 
+    glActiveTexture(GL_TEXTURE0);
+
     // Load in front of coin
     GLuint obverseTexture = SOIL_load_OGL_texture(
         "obverse.png",
@@ -65,6 +67,13 @@ void initTextures( void )
         SOIL_CREATE_NEW_ID,
         SOIL_FLAG_INVERT_Y | SOIL_FLAG_TEXTURE_REPEATS);
     
+    // Assign front of coin to 0
+    glBindTexture(GL_TEXTURE_2D, obverseTexture);
+
+
+    // Assign back of coin to 1
+    glActiveTexture(GL_TEXTURE1);
+
     // Load in back of coin
     GLuint reverseTexture = SOIL_load_OGL_texture(
         "reverse.png",
@@ -72,36 +81,31 @@ void initTextures( void )
         SOIL_CREATE_NEW_ID,
         SOIL_FLAG_INVERT_Y | SOIL_FLAG_TEXTURE_REPEATS);
 
-    // Assign front of coin to 0
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, obverseTexture);
-    
-    // Assign back of coin to 1
-    glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, reverseTexture);
 
-    // // Load in back of coin
-    // GLuint discTexture = SOIL_load_OGL_texture(
-    //     "disc.png",
-    //     SOIL_LOAD_AUTO,
-    //     SOIL_CREATE_NEW_ID,
-    //     SOIL_FLAG_INVERT_Y | SOIL_FLAG_TEXTURE_REPEATS);
+    // Load in disc texture
+                // Assign front of coin to 0
+    glActiveTexture(GL_TEXTURE2);
+    GLuint discTexture = SOIL_load_OGL_texture(
+        "disc.png",
+        SOIL_LOAD_AUTO,
+        SOIL_CREATE_NEW_ID,
+        SOIL_FLAG_INVERT_Y | SOIL_FLAG_TEXTURE_REPEATS);
 
-    //         // Load in back of coin
-    // GLuint wallTexture = SOIL_load_OGL_texture(
-    //     "reverse.png",
-    //     SOIL_LOAD_AUTO,
-    //     SOIL_CREATE_NEW_ID,
-    //     SOIL_FLAG_INVERT_Y | SOIL_FLAG_TEXTURE_REPEATS);
 
-    // // Assign front of coin to 0
-    // glActiveTexture(GL_TEXTURE2);
-    // glBindTexture(GL_TEXTURE_2D, discTexture);
-    
-    // // Assign back of coin to 1
-    // glActiveTexture(GL_TEXTURE3);
-    // glBindTexture(GL_TEXTURE_2D, wallTexture);
+    glBindTexture(GL_TEXTURE_2D, discTexture);
 
+
+    // Assign back of coin to 1
+    glActiveTexture(GL_TEXTURE3);
+    // Load in wall texture
+    GLuint wallTexture = SOIL_load_OGL_texture(
+        "wall.png",
+        SOIL_LOAD_AUTO,
+        SOIL_CREATE_NEW_ID,
+        SOIL_FLAG_INVERT_Y | SOIL_FLAG_TEXTURE_REPEATS);
+
+    glBindTexture(GL_TEXTURE_2D, wallTexture);
 }
 
 ///
@@ -203,11 +207,11 @@ void setMaterials( GLuint program, Object obj, bool usingTextures )
         glUniform1i(glGetUniformLocation(program, "texfront"), 0);
         glUniform1i(glGetUniformLocation(program, "texback"), 1);
         break;
-    // case Discs:
-    //     glUniform1i(glGetUniformLocation(program, "texfront"), 2);
-    //     break;
-    // case Cylinder:
-    //     glUniform1i(glGetUniformLocation(program, "texfront"), 3);
-    //     break;
+    case Discs:
+        glUniform1i(glGetUniformLocation(program, "texfront"), 2);
+        break;
+    case Cylinder:
+        glUniform1i(glGetUniformLocation(program, "texfront"), 3);
+        break;
     }
 }
