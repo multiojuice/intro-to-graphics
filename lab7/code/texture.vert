@@ -67,29 +67,10 @@ void main()
     vPos = vertexInEye.xyz;
     vNorm = normalInEye.xyz;
 
-// *************************************************************
-// THE FOLLOWING CODE IS HERE AS A PLACEHOLDER
-//
-// Because this skeletal vertex shader doesn't actually use
-// the vTexCoord attribute, the GLSL compiler will optimize it
-// out, and the application will generate "unknown attribute"
-// error messages whenever vTexCoord is enabled when drawing the
-// objects.  This code makes it look like vTexCoord is being used,
-// so the GLSL compiler won't eliminate it.
-//
-// REMOVE THESE STATEMENTS ONCE YOU ADD YOUR CODE THAT
-// ACTUALLY USES vTexCoord
-// *************************************************************
+    // just set it to textCoord and send to fragment shader
     texCoord = vTexCoord;
 
     // send the vertex position into clip space
-// *************************************************************
-// MODIFY THIS STATEMENT BY REMOVING THE 'nvm' TERM
-// ONCE YOU HAVE ADDED YOUR CODE THAT USES vTexCoord
-// *************************************************************
     gl_Position =  projMat * modelViewMat * vPosition;
 
-    //
-    // Add any code you need to implement texture mapping here.
-    //
 }

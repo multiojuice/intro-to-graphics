@@ -57,9 +57,8 @@ static glm::vec4 quad_ambdiffuse( 0.10f, 0.85f, 0.20f, 1.00f );
 ///
 void initTextures( void )
 {
-
+    // Set texture unit 0
     glActiveTexture(GL_TEXTURE0);
-
     // Load in front of coin
     GLuint obverseTexture = SOIL_load_OGL_texture(
         "obverse.png",
@@ -70,33 +69,30 @@ void initTextures( void )
     // Assign front of coin to 0
     glBindTexture(GL_TEXTURE_2D, obverseTexture);
 
-
-    // Assign back of coin to 1
+    // Set texture unit to 1
     glActiveTexture(GL_TEXTURE1);
-
     // Load in back of coin
     GLuint reverseTexture = SOIL_load_OGL_texture(
         "reverse.png",
         SOIL_LOAD_AUTO,
         SOIL_CREATE_NEW_ID,
         SOIL_FLAG_INVERT_Y | SOIL_FLAG_TEXTURE_REPEATS);
-
+    // Assign back of coin to 1
     glBindTexture(GL_TEXTURE_2D, reverseTexture);
 
-    // Load in disc texture
-                // Assign front of coin to 0
+    // Set texture unit to 2
     glActiveTexture(GL_TEXTURE2);
+    // Load in disc texture
     GLuint discTexture = SOIL_load_OGL_texture(
         "disc.png",
         SOIL_LOAD_AUTO,
         SOIL_CREATE_NEW_ID,
         SOIL_FLAG_INVERT_Y | SOIL_FLAG_TEXTURE_REPEATS);
-
-
+    // Assign disc to 2
     glBindTexture(GL_TEXTURE_2D, discTexture);
 
 
-    // Assign back of coin to 1
+    // Set texture unit to 3
     glActiveTexture(GL_TEXTURE3);
     // Load in wall texture
     GLuint wallTexture = SOIL_load_OGL_texture(
@@ -104,7 +100,7 @@ void initTextures( void )
         SOIL_LOAD_AUTO,
         SOIL_CREATE_NEW_ID,
         SOIL_FLAG_INVERT_Y | SOIL_FLAG_TEXTURE_REPEATS);
-
+    // Assign wall of cyl to 3
     glBindTexture(GL_TEXTURE_2D, wallTexture);
 }
 
@@ -202,6 +198,10 @@ void setMaterials( GLuint program, Object obj, bool usingTextures )
     // You will need to add code here to implement texture mapping.
     //
 
+    // Set everything based on the texture units in 
+    // init_textures.
+    // aditionally set everything to the texfront for front facing textures
+    // and just the back of coin to texback to use for when openGL senses it is not frontfacing
     switch( obj ) {
     case Quad:
         glUniform1i(glGetUniformLocation(program, "texfront"), 0);

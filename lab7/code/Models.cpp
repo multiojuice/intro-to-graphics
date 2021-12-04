@@ -46,14 +46,20 @@ const char *objects[ N_OBJECTS ] = {
 //
 // PRIVATE FUNCTIONS
 //
+
+/**
+ * Converts a vertex to coordinates for a cylinder texture
+ */
 TexCoord convertVertexToTexCoordCyl(Vertex vertex) {
     float phi = atan(vertex.x / vertex.z);
 
-
-    TexCoord tc = {phi/PI, 1 - vertex.y + .5};
+    TexCoord tc = {phi/(2 * PI), (vertex.y + 1) / 2};
     return tc;
 }
 
+/**
+ * Converts a vertex to coordinates for a disc texture
+ */
 TexCoord convertVertexToTexCoordDisc(Vertex vertex) {
     TexCoord tc = {vertex.x + .5, 1 - vertex.z + .5};
     return tc;
