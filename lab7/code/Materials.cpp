@@ -62,13 +62,13 @@ void initTextures( void )
         "obverse.png",
         SOIL_LOAD_AUTO,
         SOIL_CREATE_NEW_ID,
-        SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_TEXTURE_REPEATS);
+        SOIL_FLAG_INVERT_Y | SOIL_FLAG_TEXTURE_REPEATS);
     
     GLuint reverseTexture = SOIL_load_OGL_texture(
         "reverse.png",
         SOIL_LOAD_AUTO,
         SOIL_CREATE_NEW_ID,
-        SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_TEXTURE_REPEATS);
+        SOIL_FLAG_INVERT_Y | SOIL_FLAG_TEXTURE_REPEATS);
 
 
     glActiveTexture(GL_TEXTURE0);
@@ -176,8 +176,8 @@ void setMaterials( GLuint program, Object obj, bool usingTextures )
 
     switch( obj ) {
     case Quad:
-        glUniform1i(glGetUniformLocation(program, "texobverse"), 0);
-        glUniform1i(glGetUniformLocation(program, "texreverse"), 1);
+        glUniform1i(glGetUniformLocation(program, "texfront"), 0);
+        glUniform1i(glGetUniformLocation(program, "texback"), 1);
         break;
     /*case Cylinder:
         glUniform1f( loc, specExp[Cylinder] );
