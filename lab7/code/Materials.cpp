@@ -71,7 +71,7 @@ void initTextures( void )
         SOIL_LOAD_AUTO,
         SOIL_CREATE_NEW_ID,
         SOIL_FLAG_INVERT_Y | SOIL_FLAG_TEXTURE_REPEATS);
-t
+
     // Assign front of coin to 0
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, obverseTexture);
@@ -203,11 +203,11 @@ void setMaterials( GLuint program, Object obj, bool usingTextures )
         glUniform1i(glGetUniformLocation(program, "texfront"), 0);
         glUniform1i(glGetUniformLocation(program, "texback"), 1);
         break;
-    case Discs:
-        glUniform1i(glGetUniformLocation(program, "texfront"), 2);
-        break;
-    case Cylinder:
-        glUniform1i(glGetUniformLocation(program, "texfront"), 3);
-        break;
+    // case Discs:
+    //     glUniform1i(glGetUniformLocation(program, "texfront"), 2);
+    //     break;
+    // case Cylinder:
+    //     glUniform1i(glGetUniformLocation(program, "texfront"), 3);
+    //     break;
     }
 }
