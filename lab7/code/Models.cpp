@@ -54,12 +54,13 @@ const char *objects[ N_OBJECTS ] = {
 TexCoord convertVertexToTexCoordCyl(Vertex vertex) {
     float phi = atan(vertex.x / vertex.z);
 
-    TexCoord tc = {phi/(2 * PI), (vertex.y + 1) / 2};
+    TexCoord tc = {(phi/(2 * PI)) + .5, ((vertex.y + 1) / 2) + .5};
     return tc;
 }
 
 /**
  * Converts a vertex to coordinates for a disc texture
+ * scale to .5, -.5 range
  */
 TexCoord convertVertexToTexCoordDisc(Vertex vertex) {
     TexCoord tc = {vertex.x + .5, 1.5 - vertex.z};
