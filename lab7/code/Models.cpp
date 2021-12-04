@@ -49,6 +49,7 @@ const char *objects[ N_OBJECTS ] = {
 
 /**
  * Converts a vertex to coordinates for a cylinder texture
+ * based on slides
  */
 TexCoord convertVertexToTexCoordCyl(Vertex vertex) {
     float phi = atan(vertex.x / vertex.z);
@@ -61,7 +62,7 @@ TexCoord convertVertexToTexCoordCyl(Vertex vertex) {
  * Converts a vertex to coordinates for a disc texture
  */
 TexCoord convertVertexToTexCoordDisc(Vertex vertex) {
-    TexCoord tc = {vertex.x, vertex.z};
+    TexCoord tc = {vertex.x + .5, 1.5 - vertex.z};
     return tc;
 }
 
