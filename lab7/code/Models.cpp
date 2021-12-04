@@ -61,7 +61,7 @@ TexCoord convertVertexToTexCoordCyl(Vertex vertex) {
  * Converts a vertex to coordinates for a disc texture
  */
 TexCoord convertVertexToTexCoordDisc(Vertex vertex) {
-    TexCoord tc = {vertex.x + .5, 1 - vertex.z + .5};
+    TexCoord tc = {vertex.x, vertex.z};
     return tc;
 }
 
