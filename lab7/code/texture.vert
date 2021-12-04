@@ -1,9 +1,5 @@
 #version 150
 
-// Use this as the basis for each of your vertex shaders.
-// Be sure to replace "SHADER" with the specific shader type
-// and "YOUR_NAME_HERE" with your own name.
-
 //
 // Texture vertex shader
 //
@@ -44,6 +40,7 @@ uniform vec4 lightPosition;
 out vec3 lPos;
 out vec3 vPos;
 out vec3 vNorm;
+out vec2 texCoord;
 
 // ADD ANY OUTGOING VARIABLES YOU NEED HERE
 
@@ -83,15 +80,14 @@ void main()
 // REMOVE THESE STATEMENTS ONCE YOU ADD YOUR CODE THAT
 // ACTUALLY USES vTexCoord
 // *************************************************************
-    vec2 nvec = normalize( vTexCoord );
-    float nvm = length( nvec );
+    texCoord = vTexCoord;
 
     // send the vertex position into clip space
 // *************************************************************
 // MODIFY THIS STATEMENT BY REMOVING THE 'nvm' TERM
 // ONCE YOU HAVE ADDED YOUR CODE THAT USES vTexCoord
 // *************************************************************
-    gl_Position =  projMat * modelViewMat * nvm * vPosition;
+    gl_Position =  projMat * modelViewMat * vPosition;
 
     //
     // Add any code you need to implement texture mapping here.

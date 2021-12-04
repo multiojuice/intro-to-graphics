@@ -179,11 +179,11 @@ void setMaterials( GLuint program, Object obj, bool usingTextures )
         glUniform1i(glGetUniformLocation(program, "texobverse"), 0);
         glUniform1i(glGetUniformLocation(program, "texreverse"), 1);
         break;
-    case Cylinder:
+    /*case Cylinder:
         glUniform1f( loc, specExp[Cylinder] );
         break;
     case Discs:
         glUniform1f( loc, specExp[Discs] );
-        break;
+        break;*/
     }
 }

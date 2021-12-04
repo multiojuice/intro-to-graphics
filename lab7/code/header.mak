@@ -21,9 +21,10 @@
 # of the default version.
 #
 # CHANGE THESE LINES if you are using 'gmakemake' on a macOS system!
-#
-INCLUDE = -I/usr/local/include/
-LIBDIRS = -L/usr/local/include/SOIL
+# Contains compiled version of soil
+# MAKE REAL CLEAN
+INCLUDE = -I/home/course/cscix10/lib/SOIL/include
+LIBDIRS = -L/home/course/cscix10/lib/SOIL
 
 # uncomment this if you get "-lGL not found"
 # errors when linking on the CS machines

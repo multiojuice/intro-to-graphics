@@ -1,10 +1,5 @@
 #version 150
 
-// Use this as the basis for each of your fragment shaders.
-// Be sure to replace "SHADER" with the specific shader type
-// and "YOUR_NAME_HERE" with your own name.
-
-//
 // Texture fragment shader
 //
 // @author  RIT CS Department
@@ -31,7 +26,7 @@ in vec3 vNorm;
 //
 // ADD ANY INCOMING VARIABLES FROM THE APPLICATION HERE
 //
-in vec2 vTexCoord;
+in vec2 texCoord;
 
 //
 // Data coming from the application
@@ -81,22 +76,22 @@ void main()
 
 	// Modify these statements to do the shading calculations
     // using your texture variables.
-	ambient  = ambientLight * ambientColor;
+    ambient  = ambientLight * ambientColor;
     diffuse  = lightColor * diffuseColor * max(dot(N,L),0.0);
     specDot  = pow( max(dot(R,V),0.0), specExp );
     specular = lightColor * specularColor * specDot;
 
-    if (gl_FrontFacing) {
-        ambient  = ambientLight * texture(texfront, vTexCoord) * max(dot(N,L),0.0);
-        diffuse  = lightColor * texture(texfront, vTexCoord);
+    if (false) {
+        ambient  = ambientLight * texture(texfront, texCoord) * max(dot(N,L),0.0);
+        diffuse  = lightColor * texture(texfront, texCoord);
         specDot  = pow( max(dot(R,V),0.0), specExp );
-        specular = lightColor * texture(texfront, vTexCoord) * specDot;
+        specular = lightColor * texture(texfront, texCoord) * specDot;
 
-    } else {
-        ambient  = ambientLight * texture(texback, vTexCoord) * max(dot(N,L),0.0);
-        diffuse  = lightColor * texture(texback, vTexCoord);
+    } else if (false) {
+        ambient  = ambientLight * texture(texback, texCoord) * max(dot(N,L),0.0);
+        diffuse  = lightColor * texture(texback, texCoord);
         specDot  = pow( max(dot(R,V),0.0), specExp );
-        specular = lightColor * texture(texback, vTexCoord) * specDot;
+        specular = lightColor * texture(texback, texCoord) * specDot;
     }
 
     // calculate the final color
