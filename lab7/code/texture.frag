@@ -81,7 +81,7 @@ void main()
     specDot  = pow( max(dot(R,V),0.0), specExp );
     specular = lightColor * specularColor * specDot;
 
-    if (gl_frontFacing) {
+    if (gl_FrontFacing) {
         ambient  = ambientLight * texture(texfront, texCoord) * max(dot(N,L),0.0);
         diffuse  = lightColor * texture(texfront, texCoord);
         specDot  = pow( max(dot(R,V),0.0), specExp );
