@@ -74,7 +74,7 @@ int w_width  = 501;
 int w_height = 501;
 
 // drawing window title
-const char *w_title = "2D Pipeline";
+const char *w_title = "Still life lemon bars II";
 
 // GL context we're using (we assume 3.2, for GLSL 1.50)
 int gl_maj = 3;
