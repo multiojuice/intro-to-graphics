@@ -46,8 +46,8 @@ using namespace std;
 //
 
 // names of our GLSL shader files
-static const char *vs_p = "p150.vert";
-static const char *fs_p = "p150.frag";
+static const char *vs_p = "phong.vert";
+static const char *fs_p = "phong.frag";
 static const char *vs_t = "texture.vert";
 static const char *fs_t = "texture.frag";
 
@@ -65,10 +65,6 @@ static GLuint vao;
 
 // do we need to do a display() call?
 static bool updateDisplay = true;
-
-// animation control
-static bool animating[N_OBJECTS];  // individual animation flags
-static float angles[N_OBJECTS];    // individual rotation angles
 
 // which object(s) to texture map
 static bool map_obj[N_OBJECTS];
@@ -92,11 +88,6 @@ static glm::vec3 tea_s( 1.75f,  1.75f, 1.75f );
 static glm::vec3 tea_x( -0.75f,  1.4f, 0.6f );
 
 
-// light animation
-static bool animateLight = false;
-static float delta = 1.0f;
-static const float lightMax = 50.0f, lightMin = -50.0f;
-
 //
 // PUBLIC GLOBALS
 //
@@ -110,7 +101,7 @@ int w_width  = 600;
 int w_height = 600;
 
 // drawing window title
-const char *w_title = "Texture Mapping";
+const char *w_title = "Still Life Lemon Bars";
 
 // GL context we're using (we assume 3.2, for GLSL 1.50)
 int gl_maj = 3;
@@ -122,44 +113,6 @@ GLFWwindow *w_window;
 //
 // PRIVATE FUNCTIONS
 //
-
-///
-/// process the command-line arguments
-///
-/// @param argc   number of command-line arguments
-/// @param argv   command-line argument strings
-///
-static void args( const int argc, char *argv[] ) {
-    bool mapAll = true;
-
-    // command-line arguments specify which objects to texture-map
-    for( int i = 1; i < argc; ++i ) {
-        switch( argv[i][0] ) {
-        case 'q':
-            mapAll = false;  map_obj[Quad] = true;
-            break;
-        case 'c':
-            mapAll = false;  map_obj[Cylinder] = true;
-            break;
-        case 'd':
-            mapAll = false;  map_obj[Discs] = true;
-            break;
-        case 'x':
-            mapAll = false;
-            break;
-        default:
-            cerr << "bad object character '" << argv[i][0]
-                 << "' ignored" << endl;
-        }
-    }
-
-    // if we're mapping everything, indicate that
-    if( mapAll ) {
-        for( int i = 0; i < N_OBJECTS; ++i ) {
-            map_obj[i] = true;
-        }
-    }
-}
 
 ///
 /// Create our shapes
@@ -176,43 +129,6 @@ static void createImage( Canvas &C )
     createObject( C, Basket,    buffers[Basket] );
 }
 
-///
-/// Increment or reset a rotation angle.
-///
-/// @param obj  the object being rotated
-///
-static void rotate( int obj, float amt ) {
-    angles[obj] += amt;
-    if( angles[obj] >= 360.0f ) {
-        angles[obj] = 0.0f;
-    }
-}
-
-///
-/// Animation routine
-///
-static void animate( void ) {
-
-    if( animating[Quad] ) {
-        rotate( Quad, 2.0f );
-        updateDisplay = true;
-    }
-
-    if( animating[Cylinder] ) {
-        rotate( Cylinder, 1.0f );
-        rotate( Discs, 1.0f );
-        updateDisplay = true;
-    }
-
-    if( animateLight ) {
-        if( (delta > 0.0f && lightpos.x >= lightMax) ||
-            (delta < 0.0f && lightpos.x <= lightMin) ) {
-            delta *= -1.0f;
-        }
-        lightpos.x += delta;
-        updateDisplay = true;
-    }
-}
 
 //
 // Event callback routines for this assignment
@@ -247,35 +163,6 @@ static void keyboard( GLFWwindow *window, int key, int scan,
         return;
         // NOTREACHED
 
-    // animation control
-
-    case GLFW_KEY_A:    // start/stop all object animation
-        // NOTE: does not affect light source animation!
-        // are we currently animating anything?
-        for( int i = 0; i < N_OBJECTS; ++i ) {
-            any_anim = any_anim || animating[i];
-        }
-        // invert the condition
-        any_anim = !any_anim;
-        // propogate it
-        for( int i = 0; i < N_OBJECTS; ++i ) {
-            animating[i] = any_anim;
-        }
-        break;
-
-    case GLFW_KEY_S: // start/stop animating the quad (square)
-        animating[Quad] = !animating[Quad];
-        break;
-
-    case GLFW_KEY_C: // start/stop animating the cylinder and discs
-        animating[Cylinder] = !animating[Cylinder];
-        animating[Discs] = !animating[Discs];
-        break;
-
-    case GLFW_KEY_L:    // start/stop animating the light
-        animateLight = !animateLight;
-        break;
-
     // light position
 
     case GLFW_KEY_I: // move the light into the scene
@@ -288,21 +175,12 @@ static void keyboard( GLFWwindow *window, int key, int scan,
 
     // print out potentially useful information
 
-    case GLFW_KEY_R: // rotation angles
-        cerr << "Rotation: quad " << angles[Quad]
-             << ", cyl/disc " << angles[Cylinder] << endl;
-        break;
-
     case GLFW_KEY_P: // light position
         cerr << "Light is at (" << lightpos[0] << "," << lightpos[1]
              << "," << lightpos[2] << ")" << endl;
         break;
 
     // Reset parameters
-
-    case GLFW_KEY_1: // reset all object rotations
-        angles[Quad] = angles[Cylinder] = angles[Discs] = 0.0f;
-        break;
 
     case GLFW_KEY_2: // reset light position
         lightpos[0] = lpDefault[0];
@@ -342,29 +220,12 @@ static void keyboard( GLFWwindow *window, int key, int scan,
 }
 
 ///
-/// Set the titlebar in the display window
-///
-void setTitle( void ) {
-    char buf[128];
-
-    strcpy( buf, "Texture mapping:" );
-    if( map_obj[Quad] )     strcat( buf, " Quad" );
-    if( map_obj[Cylinder] ) strcat( buf, " Cylinder" );
-    if( map_obj[Discs] )    strcat( buf, " Discs" );
-
-    glfwSetWindowTitle( w_window, buf );
-}
-
-///
 /// Display the current image
 ///
 static void display( void )
 {
     // clear the frame buffer
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-
-    // set our titlebar
-    setTitle();
 
     // check for any errors to this point
     checkErrors( "display init" );
@@ -390,7 +251,7 @@ static void display( void )
         checkErrors( "display materials" );
 
         // select the correct rotation angles
-        glm::vec3 ang( angles[obj], angles[obj], angles[obj] );
+        glm::vec3 ang( 0.0f, 0.0f, 0.0f );
 
         // send all the transformation data
         switch( obj ) {
@@ -440,14 +301,6 @@ static void display( void )
 static bool init( void )
 {
     // Check the OpenGL major version
-    if( gl_maj < 3 || (gl_maj == 3 && gl_min < 2) ) {
-        // select the other Phong shader
-        vs_p = "p120.vert";
-        fs_p = "p120.frag";
-        // warn about GLSL versions
-        cerr << "Caution: GL version may not allow GLSL 1.50+"
-             << " code to compile!" << endl;
-    }
     checkErrors( "init start" );
 
     // Load shaders and use the resulting shader program
@@ -484,6 +337,7 @@ static bool init( void )
     // OpenGL state initialization
     glEnable( GL_DEPTH_TEST );
     glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+    // OWEN -> changed color
     glClearColor( 42.0f / 255.0f, 35.0f / 255.0f, 33.0f / 255.0f, 0.0f );
     glDepthFunc( GL_LEQUAL );
     glClearDepth( 1.0f );
@@ -517,12 +371,8 @@ static bool init( void )
 void application( int argc, char *argv[] )
 {
     // process command-line arguments
-    if( argc > 1 ) {
-        args( argc, argv );
-    } else {
-        for( int i = 0; i < N_OBJECTS; ++i ) {
-            map_obj[i] = true;
-        }
+    for( int i = 0; i < N_OBJECTS; ++i ) {
+        map_obj[i] = false;
     }
 
     // set up the objects and the scene
@@ -534,7 +384,6 @@ void application( int argc, char *argv[] )
 
     // loop until it's time to quit
     while( !glfwWindowShouldClose(w_window) ) {
-        animate();
         if( updateDisplay ) {
             updateDisplay = false;
             display();
