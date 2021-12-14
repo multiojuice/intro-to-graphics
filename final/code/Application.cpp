@@ -82,11 +82,11 @@ static glm::vec3 cyl_s( 0.5f,  0.5f,  0.5f );
 static glm::vec3 cyl_x( 1.0f,  0.5f, 1.75f );
 
 
-static glm::vec3 rect_s( 2.7f,  1.0f, 1.25f );
+static glm::vec3 rect_s( 2.9f,  1.0f, 1.25f );
 static glm::vec3 rect_x( 0.0f,  0.75f, -0.15f );
 
-static glm::vec3 tea_s( 1.0f,  1.0f, 1.0f );
-static glm::vec3 tea_x( -1.0f,  2.5f, 0.0f );
+static glm::vec3 tea_s( 1.75f,  1.75f, 1.75f );
+static glm::vec3 tea_x( -0.75f,  1.4f, 0.6f );
 
 
 
@@ -392,7 +392,7 @@ static void display( void )
         // send all the transformation data
         switch( obj ) {
         case Quad:
-            ang = glm::vec3( -90, 0, 0 );
+            ang = glm::vec3( -87, 0, 0 );
             setTransforms( program, quad_s, ang, quad_x );
             break;
         case Cylinder:  // FALL THROUGH
@@ -400,10 +400,11 @@ static void display( void )
             setTransforms( program, cyl_s, ang, cyl_x );
             break;
         case Teapot:
+            ang = glm::vec3( 3, 30, 0 );
             setTransforms( program, tea_s, ang, tea_x );
             break;
         case Cube:
-            ang = glm::vec3( -5, 0, 0 );
+            ang = glm::vec3( 3, 0, 0 );
             setTransforms( program, rect_s, ang, rect_x );
             break;
         }
