@@ -43,9 +43,18 @@ static GLfloat specExp[N_OBJECTS] = {
 
 // These variables are used in the framework only when doing Phong shading
 static glm::vec4 specular(        1.00f, 1.00f, 1.00f, 1.00f );
-static glm::vec4 cyl_ambient(     0.50f, 0.10f, 0.90f, 1.00f );
-static glm::vec4 cyl_diffuse(     0.89f, 0.00f, 0.00f, 1.00f );
-static glm::vec4 quad_ambdiffuse( 0.10f, 0.85f, 0.20f, 1.00f );
+static glm::vec4 cyl_ambient( 221.0f / 255.0f, 221.0f / 255.0f, 210.0f / 255.0f, 1.00f );
+static glm::vec4 cyl_diffuse( 221.0f / 255.0f, 221.0f / 255.0f, 210.0f / 255.0f, 1.00f );
+
+static glm::vec4 tea_ambient( 153.0f / 255.0f, 187.0f / 255.0f, 169.0f / 255.0f, 1.00f );
+static glm::vec4 tea_diffuse( 153.0f / 255.0f, 187.0f / 255.0f, 169.0f / 255.0f, 1.00f );
+
+static glm::vec4 quad_ambdiffuse( 150.0f / 255.0f, 110.0f / 255.0f, 69.0f / 255.0f, 1.00f );
+
+static glm::vec4 cube_ambdiffuse( 81.0f / 255.0f, 96.0f / 255.0f, 67.0f / 255.0f, 1.00f );
+
+static glm::vec4 basket_ambdiffuse( 141.0f / 255.0f, 112.0f / 255.0f, 90.0f / 255.0f, 1.00f );
+
 
 // Add any global definitions and/or variables you need here.
 
@@ -184,13 +193,38 @@ void setMaterials( GLuint program, Object obj, bool usingTextures )
             }
             break;
         case Cylinder: // FALL THROUGH
-        case Teapot:
         case Discs:
             if( aloc >= 0 ) {
                 glUniform4fv( aloc, 1, glm::value_ptr(cyl_ambient) );
             }
             if( dloc >= 0 ) {
                 glUniform4fv( dloc, 1, glm::value_ptr(cyl_diffuse) );
+            }
+            break;
+        case Teapot:
+            if( aloc >= 0 ) {
+                glUniform4fv( aloc, 1, glm::value_ptr(tea_ambient) );
+            }
+            if( dloc >= 0 ) {
+                glUniform4fv( dloc, 1, glm::value_ptr(tea_diffuse) );
+            }
+            break;
+
+        case Cube:
+            if( aloc >= 0 ) {
+                glUniform4fv( aloc, 1, glm::value_ptr(cube_ambdiffuse) );
+            }
+            if( dloc >= 0 ) {
+                glUniform4fv( dloc, 1, glm::value_ptr(cube_ambdiffuse) );
+            }
+            break;
+
+        case Basket:
+            if( aloc >= 0 ) {
+                glUniform4fv( aloc, 1, glm::value_ptr(basket_ambdiffuse) );
+            }
+            if( dloc >= 0 ) {
+                glUniform4fv( dloc, 1, glm::value_ptr(basket_ambdiffuse) );
             }
             break;
         }

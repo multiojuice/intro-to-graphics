@@ -21,7 +21,7 @@ in vec4 vPosition;
 in vec3 vNormal;
 
 // Texture coordinate for this vertex
-in vec2 vTexCoord;
+// in vec2 vTexCoord;
 
 //
 // Uniform data

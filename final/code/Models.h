@@ -21,7 +21,7 @@
 //
 typedef
     enum objects_e {
-        Quad = 0, Cylinder, Discs, Teapot, Cube
+        Quad = 0, Cylinder, Discs, Teapot, Cube, Basket
         // Sentinel gives us the number of shapes
         , N_OBJECTS
     } Object;

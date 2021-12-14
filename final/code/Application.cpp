@@ -85,6 +85,9 @@ static glm::vec3 cyl_x( 1.0f,  0.5f, 1.75f );
 static glm::vec3 rect_s( 2.9f,  1.0f, 1.25f );
 static glm::vec3 rect_x( 0.0f,  0.75f, -0.15f );
 
+static glm::vec3 basket_s( 0.8f,  0.8f, 0.8f );
+static glm::vec3 basket_x( 0.75f,  1.6f, 0.7f );
+
 static glm::vec3 tea_s( 1.75f,  1.75f, 1.75f );
 static glm::vec3 tea_x( -0.75f,  1.4f, 0.6f );
 
@@ -170,6 +173,7 @@ static void createImage( Canvas &C )
     createObject( C, Discs,    buffers[Discs] );
     createObject( C, Teapot,    buffers[Teapot] );
     createObject( C, Cube,    buffers[Cube] );
+    createObject( C, Basket,    buffers[Basket] );
 }
 
 ///
@@ -405,6 +409,11 @@ static void display( void )
         case Cube:
             ang = glm::vec3( 3, 0, 0 );
             setTransforms( program, rect_s, ang, rect_x );
+            break;
+
+        case Basket:
+            ang = glm::vec3( 3, -25, 0 );
+            setTransforms( program, basket_s, ang, basket_x );
             break;
         }
 

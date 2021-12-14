@@ -26,6 +26,7 @@
 
 // data for the three objects
 #include "CylinderData.h"
+#include "BasketData.h"
 #include "QuadData.h"
 #include "Cube10.h"
 
@@ -725,6 +726,18 @@ static void createTeapot( Canvas &C )
     }
 }
 
+static void makeBasket( Canvas &C )
+{
+    for( int i = 0; i < basketElementsLen - 2; i += 3 ) {
+        C.addTriangleWithNorms(
+          basketVerts[ basketElements[i] ],   basketNorms[ basketNormIx[i] ],
+          basketVerts[ basketElements[i+1] ], basketNorms[ basketNormIx[i+1] ],
+          basketVerts[ basketElements[i+2] ], basketNorms[ basketNormIx[i+2] ]
+        );
+
+    }
+}
+
 
 //
 // PUBLIC FUNCTIONS
@@ -749,6 +762,7 @@ void createObject( Canvas &C, Object obj, BufferSet &buf )
     case Discs:     makeDiscs( C );     break;
     case Teapot:    createTeapot( C );     break;
     case Cube:      makeCube( C ); break;
+    case Basket:      makeBasket( C ); break;
     }
 
     // create the buffers for the object
