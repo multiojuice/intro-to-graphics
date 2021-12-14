@@ -89,7 +89,6 @@ static glm::vec3 tea_s( 1.75f,  1.75f, 1.75f );
 static glm::vec3 tea_x( -0.75f,  1.4f, 0.6f );
 
 
-
 // light animation
 static bool animateLight = false;
 static float delta = 1.0f;
@@ -459,19 +458,6 @@ static bool init( void )
     }
     checkErrors( "init shaders 2" );
 
-#ifdef DEBUG
-    // Define the CPP symbol 'DEBUG' and recompile to enable the compilation
-    // of this code into your program for debugging purposes
-
-    // Dump the list of active global variables in the shader programs
-    cout << "Shader actives" << endl;
-    cout << "----------" << endl << "Phong shader " << phong << endl;
-    dumpActives( phong );
-    cout << "----------" << endl << "Texture shader " << texture << endl;
-    dumpActives( texture );
-    checkErrors( "init actives" );
-#endif
-
     // create our Canvas
     canvas = new Canvas( w_width, w_height );
     if( canvas == NULL ) {
@@ -488,7 +474,7 @@ static bool init( void )
     // OpenGL state initialization
     glEnable( GL_DEPTH_TEST );
     glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
-    glClearColor( 0.0f, 0.0f, 0.0f, 0.0f );
+    glClearColor( 42.0f / 255.0f, 35.0f / 255.0f, 33.0f / 255.0f, 0.0f );
     glDepthFunc( GL_LEQUAL );
     glClearDepth( 1.0f );
     checkErrors( "init setup" );
