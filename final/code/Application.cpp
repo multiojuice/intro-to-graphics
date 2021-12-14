@@ -13,6 +13,7 @@
 
 #include <cstring>
 #include <iostream>
+#include <vector>
 
 #if defined(_WIN32) || defined(_WIN64)
 #include <windows.h>
@@ -23,6 +24,7 @@
 //
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+
 
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
@@ -73,10 +75,11 @@ static bool map_obj[N_OBJECTS];
 static glm::vec3 quad_s(8,  5.5f,  1.75f );
 static glm::vec3 quad_x( 0, 0, -0.3f );
 
+static glm::vec3 bar_s(1,  2.0f,  2.0f );
+static glm::vec3 bar_x( 0,2, 0.0f );
 
 static glm::vec3 cyl_s( 0.55f,  0.55f,  0.55f );
 static glm::vec3 cyl_x( 1.0f,  0.5f, 1.5f );
-
 
 static glm::vec3 rect_s( 2.9f,  1.0f, 1.25f );
 static glm::vec3 rect_x( 0.0f,  0.75f, -0.15f );
@@ -86,6 +89,95 @@ static glm::vec3 basket_x( 0.75f,  1.6f, 0.7f );
 
 static glm::vec3 tea_s( 1.75f,  1.75f, 1.75f );
 static glm::vec3 tea_x( -0.75f,  1.4f, 0.6f );
+
+
+static vector<glm::vec3>* createScalars() {
+    vector<glm::vec3> arr[N_OBJECTS];
+
+    arr[Quad].push_back(glm::vec3( 0, 0, -0.3f ));
+    glm::vec3 cyl = glm::vec3( 1.0f,  0.5f, 1.5f );
+    arr[Cylinder].push_back(cyl);
+    arr[Discs].push_back(cyl);
+    arr[Basket].push_back(glm::vec3( 0.75f,  1.6f, 0.7f ));
+    arr[Teapot].push_back(glm::vec3( -0.75f,  1.4f, 0.6f ));
+    
+    arr[Cube].push_back(glm::vec3( 0.0f,  0.75f, -0.15f ));
+    arr[Cube].push_back(bar);
+    arr[Cube].push_back(bar);
+    arr[Cube].push_back(bar);
+
+    return arr;
+} 
+
+static vector<glm::vec3>* createTranslate() {
+    vector<glm::vec3> arr[N_OBJECTS];
+
+    arr[Quad].push_back(glm::vec3(8,  5.5f,  1.75f ));
+    glm::vec3 cyl = glm::vec3( 0.55f,  0.55f,  0.55f );
+    arr[Cylinder].push_back(cyl);
+    arr[Discs].push_back(cyl);
+    arr[Basket].push_back(glm::vec3( 0.8f,  0.8f, 0.8f ));
+    arr[Teapot].push_back(glm::vec3( 1.75f,  1.75f, 1.75f ));
+    
+    glm::vec3 bar = glm::vec3( 0.75f,  0.75f, 0.75f);
+    arr[Cube].push_back(glm::vec3( 2.9f,  1.0f, 1.25f ));
+    arr[Cube].push_back(glm::vec3( -1.0f,  3.0f, 0.0f));
+    arr[Cube].push_back(glm::vec3(1.0f,  3.0f, 0.0f));
+    arr[Cube].push_back(glm::vec3(0.0f,  3.0f, 0.0f));
+
+    return arr;
+} 
+
+static vector<glm::vec3>* createRotations() {
+    vector<glm::vec3> arr[N_OBJECTS];
+
+    arr[Quad].push_back(glm::vec3( -87, 0, 0 ));
+    arr[Discs].push_back(glm::vec3( 180, 0, 0 ));
+    arr[Cylinder].push_back(glm::vec3( 180, 0, 0 ));
+    arr[Teapot].push_back(glm::vec3( 3, 30, 0 ));
+
+    arr[Cube].push_back(glm::vec3( 3, 0, 0 ));
+    arr[Cube].push_back(glm::vec3( 3, 0, 0 ));
+    arr[Cube].push_back(glm::vec3( 3, 0, 0 ));
+    arr[Cube].push_back(glm::vec3( 3, 0, 0 ));
+
+    arr[Basket].push_back(glm::vec3( 3, -25, 0 ));
+
+    return arr;
+} 
+
+
+
+
+static vector<glm::vec3>* scale_vec = createScalars();
+static vector<glm::vec3>* trans_vecs = createTranslate();
+static vector<glm::vec3>* rot_vecs = createRotations();
+
+
+
+static glm::vec3 lemons_s[3] = {
+    glm::vec3( 1.75f,  1.75f, 1.75f),
+    glm::vec3(1.75f,  1.75f, 1.75f),
+    glm::vec3(1.75f,  1.75f, 1.75f)
+};
+
+static glm::vec3 lemons_x[3] = {
+    glm::vec3( 0.0f,  0.0f, 0.0f),
+    glm::vec3(0.0f,  0.0f, 0.0f),
+    glm::vec3(0.0f,  0.0f, 0.0f)
+};
+
+static glm::vec3 bars_s[3] = {
+    glm::vec3( 0.75f,  0.75f, 0.75f),
+    glm::vec3(0.75f,  0.75f, 0.75f),
+    glm::vec3(0.75f,  0.75f, 0.75f)
+};
+
+static glm::vec3 bars_x[3] = {
+    glm::vec3( -1.0f,  3.0f, 0.0f),
+    glm::vec3(1.0f,  3.0f, 0.0f),
+    glm::vec3(0.0f,  3.0f, 0.0f)
+};
 
 
 //
@@ -272,7 +364,6 @@ static void display( void )
             ang = glm::vec3( 3, 0, 0 );
             setTransforms( program, rect_s, ang, rect_x );
             break;
-
         case Basket:
             ang = glm::vec3( 3, -25, 0 );
             setTransforms( program, basket_s, ang, basket_x );
