@@ -74,8 +74,8 @@ static glm::vec3 quad_s(8,  5.5f,  1.75f );
 static glm::vec3 quad_x( 0, 0, -0.3f );
 
 
-static glm::vec3 cyl_s( 0.6f,  0.6f,  0.6f );
-static glm::vec3 cyl_x( 1.0f,  0.5f, 1.75f );
+static glm::vec3 cyl_s( 0.55f,  0.55f,  0.55f );
+static glm::vec3 cyl_x( 1.0f,  0.5f, 1.5f );
 
 
 static glm::vec3 rect_s( 2.9f,  1.0f, 1.25f );

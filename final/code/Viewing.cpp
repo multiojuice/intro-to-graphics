@@ -34,7 +34,7 @@
 using namespace std;
 
 /// standard camera information
-static glm::vec3 eye( 0.2f, 3.0f, 6.5f );
+static glm::vec3 eye( 0.2f, 3.0f, 5.5f );
 static glm::vec3 lookat( 0.0f, 1.0f, 0.0f );
 static glm::vec3 up( 0.0f, 1.0f, 0.0f );
 
