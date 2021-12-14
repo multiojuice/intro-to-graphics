@@ -30,15 +30,16 @@
 using namespace std;
 
 // reflective coefficients
-static glm::vec3 k( 0.5, 0.7f, 1.0f );
+static glm::vec3 k( 0.4, 0.7f, 0.8f );
 
 // specular highlights (order depends upon the Object type in Models.h)
 static GLfloat specExp[N_OBJECTS] = {
     50.0f,  // Quad
     20.0f,  // Cylinder
     20.0f,   // Discs
-    20.0f,   // Teapot
+    50.0f,   // Teapot
     20.0f,   // Cube
+    10.0f,   // Basket
 };
 
 // These variables are used in the framework only when doing Phong shading
@@ -51,7 +52,8 @@ static glm::vec4 tea_diffuse( 153.0f / 255.0f, 187.0f / 255.0f, 169.0f / 255.0f,
 
 static glm::vec4 quad_ambdiffuse( 150.0f / 255.0f, 110.0f / 255.0f, 69.0f / 255.0f, 1.00f );
 
-static glm::vec4 cube_ambdiffuse( 81.0f / 255.0f, 96.0f / 255.0f, 67.0f / 255.0f, 1.00f );
+static glm::vec4 cube_amb( 81.0f / 255.0f, 96.0f / 255.0f, 67.0f / 255.0f, 1.00f );
+static glm::vec4 cube_diffuse( 124.0f / 255.0f, 150.0f / 255.0f, 89.0f / 255.0f, 1.00f );
 
 static glm::vec4 basket_ambdiffuse( 141.0f / 255.0f, 112.0f / 255.0f, 90.0f / 255.0f, 1.00f );
 
@@ -212,10 +214,10 @@ void setMaterials( GLuint program, Object obj, bool usingTextures )
 
         case Cube:
             if( aloc >= 0 ) {
-                glUniform4fv( aloc, 1, glm::value_ptr(cube_ambdiffuse) );
+                glUniform4fv( aloc, 1, glm::value_ptr(cube_amb) );
             }
             if( dloc >= 0 ) {
-                glUniform4fv( dloc, 1, glm::value_ptr(cube_ambdiffuse) );
+                glUniform4fv( dloc, 1, glm::value_ptr(cube_diffuse) );
             }
             break;
 

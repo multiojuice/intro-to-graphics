@@ -6,8 +6,6 @@
 #define BASKETDATA_H_
 
 #include "Types.h"
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
 
 static Vertex basketVerts[] = {
 	{ 0.000000f, -0.267615f, -0.658920f }, { -0.000000f, 0.264976f, -0.522427f },

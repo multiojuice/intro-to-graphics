@@ -78,7 +78,7 @@ static glm::vec3 quad_s(8,  5.5f,  1.75f );
 static glm::vec3 quad_x( 0, 0, -0.3f );
 
 
-static glm::vec3 cyl_s( 0.5f,  0.5f,  0.5f );
+static glm::vec3 cyl_s( 0.6f,  0.6f,  0.6f );
 static glm::vec3 cyl_x( 1.0f,  0.5f, 1.75f );
 
 
@@ -400,6 +400,7 @@ static void display( void )
             break;
         case Cylinder:  // FALL THROUGH
         case Discs:
+            ang = glm::vec3( 180, 0, 0 );
             setTransforms( program, cyl_s, ang, cyl_x );
             break;
         case Teapot:

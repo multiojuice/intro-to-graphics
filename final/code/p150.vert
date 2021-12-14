@@ -20,9 +20,6 @@ in vec4 vPosition;
 // Normal vector at vertex (in model space)
 in vec3 vNormal;
 
-// Texture coordinate for this vertex
-// in vec2 vTexCoord;
-
 //
 // Uniform data
 //
