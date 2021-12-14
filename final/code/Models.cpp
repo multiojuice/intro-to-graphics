@@ -20,12 +20,14 @@
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <glm/vec3.hpp>
 
 #include "Models.h"
 
 // data for the three objects
 #include "CylinderData.h"
 #include "QuadData.h"
+#include "Cube10.h"
 
 using namespace std;
 
@@ -40,7 +42,7 @@ float PI  = 3.141592654;
 
 // object names (must match the sequence in Models.h)
 const char *objects[ N_OBJECTS ] = {
-    "Quad", "Cylinder", "Discs", "Teapot"
+    "Quad", "Cylinder", "Discs", "Teapot", "Cube"
 };
 
 //
@@ -90,6 +92,47 @@ static void makeQuad( Canvas &C )
         // Add the texture coordinates
         C.addTextureCoords( quadUV[point1], quadUV[point2],
                             quadUV[point3] );
+    }
+}
+
+
+Normal calculateNormal(Vertex p1, Vertex p2, Vertex p3) {
+    glm::vec3 u(p2.x - p1.x, p2.y - p1.y, p2.z - p1.z);
+    glm::vec3 v(p3.x - p1.x, p3.y - p1.y, p3.z - p1.z);
+
+    Normal norm;
+    norm.x = (u.y * v.z) - (u.z * v.y);
+    norm.y = (u.z * v.x) - (u.x * v.z);
+    norm.z = (u.x * v.y) - (u.y * v.x);
+
+    return norm;
+}
+
+
+///
+/// makeQuad() - create a quad object
+///
+static void makeCube( Canvas &C )
+{
+    for( int i = 0; i < cubeElementsLength - 2; i += 3 ) {
+
+        // Calculate the base indices of the three vertices
+        int point1 = cubeElements[i];
+        int point2 = cubeElements[i + 1];
+        int point3 = cubeElements[i + 2];
+
+        Vertex p1 = cubeVertices[point1];
+        Vertex p2 = cubeVertices[point2];
+        Vertex p3 = cubeVertices[point3];
+
+        // Add this triangle to the collection
+        Normal norm = calculateNormal(p1, p2, p3);
+
+        C.addTriangleWithNorms( p1, norm, p2, norm, p3, norm );
+
+        // // Add the texture coordinates
+        // C.addTextureCoords( quadUV[point1], quadUV[point2],
+        //                     quadUV[point3] );
     }
 }
 
@@ -704,7 +747,8 @@ void createObject( Canvas &C, Object obj, BufferSet &buf )
     case Quad:      makeQuad( C );      break;
     case Cylinder:  makeCylinder( C );  break;
     case Discs:     makeDiscs( C );     break;
-    case Teapot:     createTeapot( C );     break;
+    case Teapot:    createTeapot( C );     break;
+    case Cube:      makeCube( C ); break;
     }
 
     // create the buffers for the object

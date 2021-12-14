@@ -82,8 +82,12 @@ static glm::vec3 cyl_s( 0.5f,  0.5f,  0.5f );
 static glm::vec3 cyl_x( 1.0f,  0.5f, 1.75f );
 
 
+static glm::vec3 rect_s( 2.7f,  1.0f, 1.25f );
+static glm::vec3 rect_x( 0.0f,  0.75f, -0.15f );
+
 static glm::vec3 tea_s( 1.0f,  1.0f, 1.0f );
-static glm::vec3 tea_x( 0.0f,  0.0f, 0.0f );
+static glm::vec3 tea_x( -1.0f,  2.5f, 0.0f );
+
 
 
 // light animation
@@ -166,6 +170,7 @@ static void createImage( Canvas &C )
     createObject( C, Cylinder, buffers[Cylinder] );
     createObject( C, Discs,    buffers[Discs] );
     createObject( C, Teapot,    buffers[Teapot] );
+    createObject( C, Cube,    buffers[Cube] );
 }
 
 ///
@@ -396,6 +401,11 @@ static void display( void )
             break;
         case Teapot:
             setTransforms( program, tea_s, ang, tea_x );
+            break;
+        case Cube:
+            ang = glm::vec3( -5, 0, 0 );
+            setTransforms( program, rect_s, ang, rect_x );
+            break;
         }
 
         checkErrors( "display xforms" );

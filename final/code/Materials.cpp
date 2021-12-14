@@ -37,7 +37,8 @@ static GLfloat specExp[N_OBJECTS] = {
     50.0f,  // Quad
     20.0f,  // Cylinder
     20.0f,   // Discs
-    20.0f   // Teapot
+    20.0f,   // Teapot
+    20.0f,   // Cube
 };
 
 // These variables are used in the framework only when doing Phong shading
@@ -135,6 +136,9 @@ void setMaterials( GLuint program, Object obj, bool usingTextures )
         break;
     case Teapot:
         glUniform1f( loc, specExp[Teapot] );
+        break;
+    case Cube:
+        glUniform1f( loc, specExp[Cube] );
         break;
     }
 
