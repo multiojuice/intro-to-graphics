@@ -74,10 +74,14 @@ static float angles[N_OBJECTS];    // individual rotation angles
 static bool map_obj[N_OBJECTS];
 
 // object transformations
-static glm::vec3 quad_s( 1.75f,  1.75f,  1.75f );
-static glm::vec3 quad_x( -1.25f, 0.5f, -1.5f );
-static glm::vec3 cyl_s( 1.5f,  1.5f,  1.5f );
-static glm::vec3 cyl_x( 1.0f,  0.5f, -1.5f );
+static glm::vec3 quad_s(8,  5.5f,  1.75f );
+static glm::vec3 quad_x( 0, 0, -0.3f );
+
+
+static glm::vec3 cyl_s( 0.5f,  0.5f,  0.5f );
+static glm::vec3 cyl_x( 1.0f,  0.5f, 1.75f );
+
+
 static glm::vec3 tea_s( 1.0f,  1.0f, 1.0f );
 static glm::vec3 tea_x( 0.0f,  0.0f, 0.0f );
 
@@ -383,7 +387,7 @@ static void display( void )
         // send all the transformation data
         switch( obj ) {
         case Quad:
-            ang = glm::vec3( 0.0f, angles[Quad], 0.0f );
+            ang = glm::vec3( -90, 0, 0 );
             setTransforms( program, quad_s, ang, quad_x );
             break;
         case Cylinder:  // FALL THROUGH
