@@ -211,96 +211,6 @@ static void createImage( Canvas &C )
     createObject( C, Sphere,    buffers[Sphere] );
 }
 
-
-//
-// Event callback routines for this assignment
-//
-
-///
-/// Handle keyboard input
-///
-/// @param window   GLFW window being used
-/// @param key      code for the key that was pressed
-/// @param scan     scan code of the key
-/// @param action   type of event (press, release, etc.)
-/// @param mods     modifiers in use (shift, etc.)
-///
-static void keyboard( GLFWwindow *window, int key, int scan,
-                      int action, int mods )
-{
-    bool any_anim = false;
-
-    // only react to "press" events
-    if( action != GLFW_PRESS ) {
-        return;
-    }
-
-    switch( key ) {
-
-    // termination
-    case GLFW_KEY_ESCAPE:  // FALL THROUGH
-    case GLFW_KEY_Q:
-        glfwSetWindowShouldClose( w_window, 1 );
-        // return without updating the display
-        return;
-        // NOTREACHED
-
-    // light position
-
-    case GLFW_KEY_I: // move the light into the scene
-        lightpos[2] -= 2.0f;
-        break;
-
-    case GLFW_KEY_O: // move the light out from the scene
-        lightpos[2] += 2.0f;
-        break;
-
-    // print out potentially useful information
-
-    case GLFW_KEY_P: // light position
-        cerr << "Light is at (" << lightpos[0] << "," << lightpos[1]
-             << "," << lightpos[2] << ")" << endl;
-        break;
-
-    // Reset parameters
-
-    case GLFW_KEY_2: // reset light position
-        lightpos[0] = lpDefault[0];
-        lightpos[1] = lpDefault[1];
-        lightpos[2] = lpDefault[2];
-        lightpos[3] = lpDefault[3];
-        break;
-
-    // help message
-    case GLFW_KEY_H:
-        cout << "  Key(s)             Action" << endl;
-        cout << "=========   =======================" << endl;
-        cout << "ESC, q, Q   Terminate the program" << endl;
-        cout << "  h, H      Print this message" << endl;
-        cout << "  a, A      Toggle all object animations" << endl;
-        cout << "  s, S      Toggle square (quad) animation" << endl;
-        cout << "  c, C      Toggle cylinder animation" << endl;
-        cout << "  l, L      Toggle light animation" << endl;
-        cout << "  i, I      Move light toward the objects" << endl;
-        cout << "  o, O      Move light away from the objects" << endl;
-        cout << "  p, P      Print light position" << endl;
-        cout << "  r, R      Print rotation angles" << endl;
-        cout << "   1        Reset all object rotations" << endl;
-        cout << "   2        Reset light position" << endl;
-        // return without updating the display
-        return;
-        // NOTREACHED
-
-    default:
-        cerr << "Unknown keycode " << key << " ignored" << endl;
-        // return without updating the display
-        return;
-        // NOTREACHED
-    }
-
-    updateDisplay = true;
-}
-
 ///
 /// Display the current image
 ///
@@ -404,10 +314,6 @@ static bool init( void )
     // initialize all texture-related things
     initTextures();
     checkErrors( "init textures" );
-
-    // register our callbacks
-    glfwSetKeyCallback( w_window, keyboard );
-    checkErrors( "init callback" );
 
     return( true );
 }
