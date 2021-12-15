@@ -25,7 +25,7 @@
 
 // this is here in case you are using SOIL;
 // if you're not, it can be deleted.
-// #include <SOIL/SOIL.h>
+#include <SOIL/SOIL.h>
 
 using namespace std;
 
@@ -81,51 +81,39 @@ static glm::vec4 basket_ambdiffuse( 160.0f / 255.0f, 145.0f / 255.0f, 120.0f / 2
 ///
 void initTextures( void )
 {
-    // // Set texture unit 0
-    // glActiveTexture(GL_TEXTURE0);
-    // // Load in front of coin
-    // GLuint obverseTexture = SOIL_load_OGL_texture(
-    //     "obverse.png",
-    //     SOIL_LOAD_AUTO,
-    //     SOIL_CREATE_NEW_ID,
-    //     SOIL_FLAG_INVERT_Y | SOIL_FLAG_TEXTURE_REPEATS);
+    // Set texture unit 0
+    glActiveTexture(GL_TEXTURE0);
+    // Load in front of coin
+    GLuint woodTexture = SOIL_load_OGL_texture(
+        "wood.jpg",
+        SOIL_LOAD_AUTO,
+        SOIL_CREATE_NEW_ID,
+        SOIL_FLAG_INVERT_Y | SOIL_FLAG_TEXTURE_REPEATS);
     
-    // // Assign front of coin to 0
-    // glBindTexture(GL_TEXTURE_2D, obverseTexture);
+    // Assign front of coin to 0
+    glBindTexture(GL_TEXTURE_2D, woodTexture);
 
-    // // Set texture unit to 1
-    // glActiveTexture(GL_TEXTURE1);
-    // // Load in back of coin
-    // GLuint reverseTexture = SOIL_load_OGL_texture(
-    //     "reverse.png",
-    //     SOIL_LOAD_AUTO,
-    //     SOIL_CREATE_NEW_ID,
-    //     SOIL_FLAG_INVERT_Y | SOIL_FLAG_TEXTURE_REPEATS);
-    // // Assign back of coin to 1
-    // glBindTexture(GL_TEXTURE_2D, reverseTexture);
+    // Set texture unit to 1
+    glActiveTexture(GL_TEXTURE1);
+    // Load in disc texture
+    GLuint discTexture = SOIL_load_OGL_texture(
+        "wood.jpg",
+        SOIL_LOAD_AUTO,
+        SOIL_CREATE_NEW_ID,
+        SOIL_FLAG_INVERT_Y | SOIL_FLAG_TEXTURE_REPEATS);
+    // Assign disc to 1
+    glBindTexture(GL_TEXTURE_2D, discTexture);
 
-    // // Set texture unit to 2
-    // glActiveTexture(GL_TEXTURE2);
-    // // Load in disc texture
-    // GLuint discTexture = SOIL_load_OGL_texture(
-    //     "disc.png",
-    //     SOIL_LOAD_AUTO,
-    //     SOIL_CREATE_NEW_ID,
-    //     SOIL_FLAG_INVERT_Y | SOIL_FLAG_TEXTURE_REPEATS);
-    // // Assign disc to 2
-    // glBindTexture(GL_TEXTURE_2D, discTexture);
-
-
-    // // Set texture unit to 3
-    // glActiveTexture(GL_TEXTURE3);
-    // // Load in wall texture
-    // GLuint wallTexture = SOIL_load_OGL_texture(
-    //     "wall.png",
-    //     SOIL_LOAD_AUTO,
-    //     SOIL_CREATE_NEW_ID,
-    //     SOIL_FLAG_INVERT_Y | SOIL_FLAG_TEXTURE_REPEATS);
-    // // Assign wall of cyl to 3
-    // glBindTexture(GL_TEXTURE_2D, wallTexture);
+    // Set texture unit to 2
+    glActiveTexture(GL_TEXTURE2);
+    // Load in wall texture
+    GLuint wallTexture = SOIL_load_OGL_texture(
+        "flower.jpg",
+        SOIL_LOAD_AUTO,
+        SOIL_CREATE_NEW_ID,
+        SOIL_FLAG_INVERT_Y | SOIL_FLAG_TEXTURE_REPEATS);
+    // Assign wall of cyl to 2
+    glBindTexture(GL_TEXTURE_2D, wallTexture);
 }
 
 ///
@@ -261,7 +249,6 @@ void setMaterials( GLuint program, Object obj, bool usingTextures, int index )
                     glUniform4fv( dloc, 1, glm::value_ptr(bar_diffuse) );
                 }
             }
-
             break;
 
         case Basket:
@@ -300,16 +287,15 @@ void setMaterials( GLuint program, Object obj, bool usingTextures, int index )
     // init_textures.
     // aditionally set everything to the texfront for front facing textures
     // and just the back of coin to texback to use for when openGL senses it is not frontfacing
-    // switch( obj ) {
-    // case Quad:
-    //     glUniform1i(glGetUniformLocation(program, "texfront"), 0);
-    //     glUniform1i(glGetUniformLocation(program, "texback"), 1);
-    //     break;
-    // case Discs:
-    //     glUniform1i(glGetUniformLocation(program, "texfront"), 2);
-    //     break;
-    // case Cylinder:
-    //     glUniform1i(glGetUniformLocation(program, "texfront"), 3);
-    //     break;
-    // }
+    switch( obj ) {
+    case Quad:
+        glUniform1i(glGetUniformLocation(program, "texfront"), 0);
+        break;
+    case Discs:
+        glUniform1i(glGetUniformLocation(program, "texfront"), 1);
+        break;
+    case Cylinder:
+        glUniform1i(glGetUniformLocation(program, "texfront"), 2);
+        break;
+    }
 }

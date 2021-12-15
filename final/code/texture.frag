@@ -83,20 +83,11 @@ void main()
     specDot  = pow( max(dot(R,V),0.0), specExp );
     specular = lightColor * specularColor * specDot;
 
-    // Check if we should use texfront or texback
-    // if (gl_FrontFacing) {
-    //     // set the light based on texture color
-    //     ambient  = ambientLight * texture(texfront, texCoord) * max(dot(N,L),0.0);
-    //     diffuse  = lightColor * texture(texfront, texCoord);
-    //     specDot  = pow( max(dot(R,V),0.0), specExp );
-    //     specular = lightColor * texture(texfront, texCoord) * specDot;
-    // } else {
-    //     // set the light based on texture color
-    //     ambient  = ambientLight * texture(texback, texCoord) * max(dot(N,L),0.0);
-    //     diffuse  = lightColor * texture(texback, texCoord);
-    //     specDot  = pow( max(dot(R,V),0.0), specExp );
-    //     specular = lightColor * texture(texback, texCoord) * specDot;
-    // }
+    // set the light based on texture color
+    ambient  = ambientLight * texture(texfront, texCoord) * max(dot(N,L),0.0);
+    diffuse  = lightColor * texture(texfront, texCoord);
+    specDot  = pow( max(dot(R,V),0.0), specExp );
+    specular = lightColor * texture(texfront, texCoord) * specDot;
 
     // calculate the final color
     vec4 color = (kCoeff.x * ambient) +
