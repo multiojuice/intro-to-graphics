@@ -74,25 +74,7 @@ static bool updateDisplay = true;
 static bool map_obj[N_OBJECTS];
 
 // object transformations
-static glm::vec3 quad_s(8,  5.5f,  1.75f );
-static glm::vec3 quad_x( 0, 0, -0.3f );
-
-static glm::vec3 bar_s(1,  2.0f,  2.0f );
-static glm::vec3 bar_x( 0,2, 0.0f );
-
-static glm::vec3 cyl_s( 0.55f,  0.55f,  0.55f );
-static glm::vec3 cyl_x( 1.0f,  0.5f, 1.5f );
-
-static glm::vec3 rect_s( 2.9f,  1.0f, 1.25f );
-static glm::vec3 rect_x( 0.0f,  0.75f, -0.15f );
-
-static glm::vec3 basket_s( 0.8f,  0.8f, 0.8f );
-static glm::vec3 basket_x( 0.75f,  1.6f, 0.7f );
-
-static glm::vec3 tea_s( 1.75f,  1.75f, 1.75f );
-static glm::vec3 tea_x( -0.75f,  1.4f, 0.6f );
-
-
+    // I use a factory method setup to generate the structures i needed for a simpler code segment
 static vector<glm::vec3>* createTranslate() {
     vector<glm::vec3>* arr = (vector<glm::vec3>*) malloc(sizeof(vector<glm::vec3>) * N_OBJECTS);
 
@@ -186,32 +168,6 @@ static vector<glm::vec3>* createRotations() {
 static vector<glm::vec3>* scale_vecs= createScalars();
 static vector<glm::vec3>* trans_vecs = createTranslate();
 static vector<glm::vec3>* rot_vecs = createRotations();
-
-
-static glm::vec3 lemons_s[3] = {
-    glm::vec3( 1.75f,  1.75f, 1.75f),
-    glm::vec3(1.75f,  1.75f, 1.75f),
-    glm::vec3(1.75f,  1.75f, 1.75f)
-};
-
-static glm::vec3 lemons_x[3] = {
-    glm::vec3( 0.0f,  0.0f, 0.0f),
-    glm::vec3(0.0f,  0.0f, 0.0f),
-    glm::vec3(0.0f,  0.0f, 0.0f)
-};
-
-static glm::vec3 bars_s[3] = {
-    glm::vec3( 0.75f,  0.75f, 0.75f),
-    glm::vec3(0.75f,  0.75f, 0.75f),
-    glm::vec3(0.75f,  0.75f, 0.75f)
-};
-
-static glm::vec3 bars_x[3] = {
-    glm::vec3( -1.0f,  3.0f, 0.0f),
-    glm::vec3(1.0f,  3.0f, 0.0f),
-    glm::vec3(0.0f,  3.0f, 0.0f)
-};
-
 
 //
 // PUBLIC GLOBALS
@@ -472,6 +428,10 @@ void application( int argc, char *argv[] )
     for( int i = 0; i < N_OBJECTS; ++i ) {
         map_obj[i] = false;
     }
+
+    map_obj[Cylinder] = true;
+    map_obj[Discs] = true;
+    map_obj[Quad] = true;
 
     // set up the objects and the scene
     if( !init() ) {

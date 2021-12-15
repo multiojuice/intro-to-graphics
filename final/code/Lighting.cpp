@@ -8,7 +8,6 @@
 //  Updated: 2021/11/07 by wrc
 //  Copyright 2021 Rochester Institute of Technology.  All rights reserved.
 //
-//  Students should not modify this file.
 //
 
 #include "Lighting.h"
@@ -22,10 +21,10 @@
 
 using namespace std;
 
-// publicly-available lighting data
-// light position (original and current)
-glm::vec4 lpDefault( 15.0f, 18.0f, 20.0f, 1.0f );
-glm::vec4 lightpos(  15.0f, 18.0f, 20.0f, 1.0f );
+// Edited to match specular spots on original image
+// I think it turned out well
+glm::vec4 lpDefault( 15.0f, 8.0f, 10.0f, 1.0f );
+glm::vec4 lightpos(  15.0f, 8.0f, 10.0f, 1.0f );
 
 // private lighting data
 static glm::vec4 lightcolor( 1.0f, 1.0f, 1.0f, 1.0f );

@@ -8,7 +8,6 @@
 //  Updates:  2021/11/07 by wrc
 //  Copyright 2021 Rochester Institute of Technology.  All rights reserved.
 //
-//  This file should not be modified by students.
 //
 
 #if defined(_WIN32) || defined(_WIN64)
@@ -34,6 +33,7 @@
 using namespace std;
 
 /// standard camera information
+/// Edited to give a zoomed in camera shot effect
 static glm::vec3 eye( 0.2f, 3.0f, 5.5f );
 static glm::vec3 lookat( 0.0f, 1.0f, 0.0f );
 static glm::vec3 up( 0.0f, 1.0f, 0.0f );
