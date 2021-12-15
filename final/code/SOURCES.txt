@@ -4,7 +4,6 @@ Summary:
     Most of my changes are in Materials, Application, Models. Small changes in Lighting and Viewing 
     and the addition of multiple files, models, and orchestrating more objects.
 
-
 Files from earlier frameworks: 
     Unaltered:
         From Lab7:
@@ -32,10 +31,10 @@ Files from earlier frameworks:
         
     Altered:
         Based on Lab7:
-            Application.cpp
-            Lighting.cpp
-            Materials.cpp
-            Models.cpp
+            Application.cpp -> Made a ton of changes
+            Lighting.cpp -> Edited some lighting vars to get more accurate lighting
+            Materials.cpp -> Similar to lab7 plus a ton more models
+            Models.cpp -> Similar to lab7 plus a ton more models
             p150.vert -> phong.vert
             p150.frag -> phong.frag
                 NOTE: I plugged in my version from lab6 and found that yours was slightly better at spanning the light across the Image
@@ -46,12 +45,13 @@ Files from earlier frameworks:
                     was hard to use as simply a starting point and not just tweak var names. 
 
             texture.frag & texture.vert -> Based on the same version that I submitted for lab7
-            Viewing.cpp
+            Viewing.cpp -> Change some of the variables to get a different zoomed view
 
 
 Image files: 
-    flower.jpg -> https://pixabay.com/illustrations/floral-backdrop-pattern-flower-2985648/
+    flower.jpg -> https://pixabay.com/illustrations/flower-background-vintage-roses-3214833/
     wood.jpg -> https://pixabay.com/photos/wood-floor-backdrop-background-1866654/
+    cup.jpg -> https://pixabay.com/illustrations/cup-coffee-foam-café-au-lait-1009231/ -> I wanted a good morning cup :D
 
 Object model files: 
     Basket.obj -> Created with Blender by hand with the help of some internet tutorials and friends that are familiar with the oddities of blender. 
