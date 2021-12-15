@@ -264,7 +264,6 @@ static void makeSphere( Canvas &C )
           p2, n2,
           p3, n3 
         );
-
     }
 }
 

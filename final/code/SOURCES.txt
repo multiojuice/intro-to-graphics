@@ -1,0 +1,53 @@
+Owen Sullivan
+
+Summary:
+    Most of my changes are in Materials, Application, Models. Small changes in Lighting and Viewing 
+    and the addition of multiple files, models, and orchestrating more objects.
+
+
+Files from earlier frameworks: 
+    Unaltered:
+        From Lab7:
+            Application.h
+            Canvas.cpp & Canvas.h
+            Buffers.cpp & Buffers.h
+            compmac
+            inverse.glsl
+            Lighting.cpp
+            Lighting.h
+            main.cpp
+            Materials.h
+            Models.h
+            QuadData.h
+            ShaderSetup.cpp & ShaderSetup.h
+            Types.h
+            Utils.cpp & Utils.h           
+            Viewing.cpp & 
+
+        From Lab6:
+            TeapotData.h -> I just renamed the file and moved stuff around
+
+        Course Website Meshes:
+            Cube10.h
+            Parts.h
+            Sphere20.h
+        
+    Altered:
+        Based on Lab7:
+            Application.cpp
+            Materials.cpp
+            Models.cpp
+            p150.vert -> phong.vert
+            p150.frag -> phong.frag
+            texture.frag & texture.vert -> Based on the same version that I submitted for lab7
+
+
+Image files: 
+
+
+Object model files: 
+    Basket.obj -> Created with Blender by hand with the help of some internet tutorials and friends that are familiar with the oddities of blender. 
+        I got stuck in some weird selector mode for like 20 minutes lol. Then I parsed the .obj into BasketData.h similar to last lab setup.
+
+Algorithms: 
+    Finding surface normals out of three points used in Models.cpp::calculateNormals -> https://www.khronos.org/opengl/wiki/Calculating_a_Surface_Normal
