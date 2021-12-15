@@ -23,9 +23,6 @@ in vec3 vPos;
 // Vertex normal
 in vec3 vNorm;
 
-// Texture coordinates
-in vec2 texCoord;
-
 //
 // Data coming from the application
 //
