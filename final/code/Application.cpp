@@ -14,6 +14,8 @@
 #include <cstring>
 #include <iostream>
 #include <vector>
+#include <stdio.h>
+#include <stdlib.h>
 
 #if defined(_WIN32) || defined(_WIN64)
 #include <windows.h>
@@ -91,26 +93,37 @@ static glm::vec3 tea_s( 1.75f,  1.75f, 1.75f );
 static glm::vec3 tea_x( -0.75f,  1.4f, 0.6f );
 
 
-static vector<glm::vec3>* createScalars() {
-    vector<glm::vec3> arr[N_OBJECTS];
+static vector<glm::vec3>* createTranslate() {
+    vector<glm::vec3>* arr = (vector<glm::vec3>*) malloc(sizeof(vector<glm::vec3>) * N_OBJECTS);
 
     arr[Quad].push_back(glm::vec3( 0, 0, -0.3f ));
     glm::vec3 cyl = glm::vec3( 1.0f,  0.5f, 1.5f );
     arr[Cylinder].push_back(cyl);
     arr[Discs].push_back(cyl);
-    arr[Basket].push_back(glm::vec3( 0.75f,  1.6f, 0.7f ));
+    arr[Basket].push_back(glm::vec3( 0.75f,  1.6f, 0.35f ));
     arr[Teapot].push_back(glm::vec3( -0.75f,  1.4f, 0.6f ));
     
+    arr[Sphere].push_back(glm::vec3( 0.95f,  1.95f, .625f ));
+    arr[Sphere].push_back(glm::vec3( 0.575f,  2.0f, 0.35f ));
+    arr[Sphere].push_back(glm::vec3( 0.6f,  1.75f, 0.55f ));
+
     arr[Cube].push_back(glm::vec3( 0.0f,  0.75f, -0.15f ));
-    arr[Cube].push_back(bar);
-    arr[Cube].push_back(bar);
-    arr[Cube].push_back(bar);
+    // Plate
+    arr[Cube].push_back(glm::vec3( -0.25f,  .6f, 1.75f ));
+
+    // Napkin
+    arr[Cube].push_back(glm::vec3( -0.85f,  .6f, 1.75f ));
+
+    // Lemon Bars
+    arr[Cube].push_back(glm::vec3( -0.1f,  1.0f, 2.3f));
+    arr[Cube].push_back(glm::vec3(-0.35f,  .8f, 1.6f));
+    arr[Cube].push_back(glm::vec3(-0.45f,  1.0f, 1.85f));
 
     return arr;
 } 
 
-static vector<glm::vec3>* createTranslate() {
-    vector<glm::vec3> arr[N_OBJECTS];
+static vector<glm::vec3>* createScalars() {
+    vector<glm::vec3>* arr = (vector<glm::vec3>*) malloc(sizeof(vector<glm::vec3>) * N_OBJECTS);
 
     arr[Quad].push_back(glm::vec3(8,  5.5f,  1.75f ));
     glm::vec3 cyl = glm::vec3( 0.55f,  0.55f,  0.55f );
@@ -118,41 +131,61 @@ static vector<glm::vec3>* createTranslate() {
     arr[Discs].push_back(cyl);
     arr[Basket].push_back(glm::vec3( 0.8f,  0.8f, 0.8f ));
     arr[Teapot].push_back(glm::vec3( 1.75f,  1.75f, 1.75f ));
+
+    // Lemons
+    arr[Sphere].push_back(glm::vec3( 0.5f,  .4f, .4f ));
+    arr[Sphere].push_back(glm::vec3( 0.5f,  .4f, .4f ));
+    arr[Sphere].push_back(glm::vec3( 0.5f,  .4f, .4f ));
+
     
-    glm::vec3 bar = glm::vec3( 0.75f,  0.75f, 0.75f);
     arr[Cube].push_back(glm::vec3( 2.9f,  1.0f, 1.25f ));
-    arr[Cube].push_back(glm::vec3( -1.0f,  3.0f, 0.0f));
-    arr[Cube].push_back(glm::vec3(1.0f,  3.0f, 0.0f));
-    arr[Cube].push_back(glm::vec3(0.0f,  3.0f, 0.0f));
+    // Plate
+    arr[Cube].push_back(glm::vec3( 0.5f,  0.15f, 1.0f ));
+
+    // Napkin
+    arr[Cube].push_back(glm::vec3( 0.3f,  0.10f, 1.2f ));
+
+    // Lemon Bars
+    glm::vec3 bar = glm::vec3( 0.2f,  0.075f, 0.5f );
+    arr[Cube].push_back(glm::vec3( 0.2f,  0.075f, 0.4f ));
+    arr[Cube].push_back(bar);
+    arr[Cube].push_back(bar);
 
     return arr;
 } 
 
 static vector<glm::vec3>* createRotations() {
-    vector<glm::vec3> arr[N_OBJECTS];
+    vector<glm::vec3>* arr = (vector<glm::vec3>*) malloc(sizeof(vector<glm::vec3>) * N_OBJECTS);
 
     arr[Quad].push_back(glm::vec3( -87, 0, 0 ));
     arr[Discs].push_back(glm::vec3( 180, 0, 0 ));
     arr[Cylinder].push_back(glm::vec3( 180, 0, 0 ));
     arr[Teapot].push_back(glm::vec3( 3, 30, 0 ));
+    arr[Sphere].push_back(glm::vec3( 1.0f,  1.0f, 45.0f ));
+    arr[Sphere].push_back(glm::vec3( 1.0f,  40.0f, 1.0f ));
+    arr[Sphere].push_back(glm::vec3( 1.0f,  1.0f, 1.0f ));
+
 
     arr[Cube].push_back(glm::vec3( 3, 0, 0 ));
-    arr[Cube].push_back(glm::vec3( 3, 0, 0 ));
-    arr[Cube].push_back(glm::vec3( 3, 0, 0 ));
-    arr[Cube].push_back(glm::vec3( 3, 0, 0 ));
+    // Plate
+    arr[Cube].push_back(glm::vec3( 3, 32, 0 ));
+
+    // Napkin
+    arr[Cube].push_back(glm::vec3( 3, 28, 0 ));
+
+    // Lemon bars
+    arr[Cube].push_back(glm::vec3( 12, 25, -5 ));
+    arr[Cube].push_back(glm::vec3( 3, 90, 0 ));
+    arr[Cube].push_back(glm::vec3( 3, 80, 0 ));
 
     arr[Basket].push_back(glm::vec3( 3, -25, 0 ));
 
     return arr;
 } 
 
-
-
-
-static vector<glm::vec3>* scale_vec = createScalars();
+static vector<glm::vec3>* scale_vecs= createScalars();
 static vector<glm::vec3>* trans_vecs = createTranslate();
 static vector<glm::vec3>* rot_vecs = createRotations();
-
 
 
 static glm::vec3 lemons_s[3] = {
@@ -219,6 +252,7 @@ static void createImage( Canvas &C )
     createObject( C, Teapot,    buffers[Teapot] );
     createObject( C, Cube,    buffers[Cube] );
     createObject( C, Basket,    buffers[Basket] );
+    createObject( C, Sphere,    buffers[Sphere] );
 }
 
 
@@ -337,50 +371,23 @@ static void display( void )
         // and our lighting
         setLighting( program );
         checkErrors( "display lighting" );
+        
+        for (int i = 0; i < scale_vecs[obj].size(); i++) {
+            setMaterials( program, (Object) obj, map_obj[obj] , i);
+            setTransforms( program, scale_vecs[obj][i], rot_vecs[obj][i], trans_vecs[obj][i] );
 
-        // set texture parameters OR material properties
-        setMaterials( program, (Object) obj, map_obj[obj] );
-        checkErrors( "display materials" );
+            checkErrors( "display xforms" );
 
-        // select the correct rotation angles
-        glm::vec3 ang( 0.0f, 0.0f, 0.0f );
+            // draw it
+            buffers[obj].selectBuffers( program,
+                "vPosition", NULL, "vNormal", 
+                map_obj[obj] ? "vTexCoord" : NULL );
+            checkErrors( "display select" );
 
-        // send all the transformation data
-        switch( obj ) {
-        case Quad:
-            ang = glm::vec3( -87, 0, 0 );
-            setTransforms( program, quad_s, ang, quad_x );
-            break;
-        case Cylinder:  // FALL THROUGH
-        case Discs:
-            ang = glm::vec3( 180, 0, 0 );
-            setTransforms( program, cyl_s, ang, cyl_x );
-            break;
-        case Teapot:
-            ang = glm::vec3( 3, 30, 0 );
-            setTransforms( program, tea_s, ang, tea_x );
-            break;
-        case Cube:
-            ang = glm::vec3( 3, 0, 0 );
-            setTransforms( program, rect_s, ang, rect_x );
-            break;
-        case Basket:
-            ang = glm::vec3( 3, -25, 0 );
-            setTransforms( program, basket_s, ang, basket_x );
-            break;
+            glDrawElements( GL_TRIANGLES, buffers[obj].numElements,
+                            GL_UNSIGNED_INT, (void *) 0 );
+            checkErrors( "display draw" );
         }
-
-        checkErrors( "display xforms" );
-
-        // draw it
-        buffers[obj].selectBuffers( program,
-            "vPosition", NULL, "vNormal", 
-            map_obj[obj] ? "vTexCoord" : NULL );
-        checkErrors( "display select" );
-
-        glDrawElements( GL_TRIANGLES, buffers[obj].numElements,
-                        GL_UNSIGNED_INT, (void *) 0 );
-        checkErrors( "display draw" );
     }
 }
 

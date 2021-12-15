@@ -55,7 +55,18 @@ static glm::vec4 quad_ambdiffuse( 150.0f / 255.0f, 110.0f / 255.0f, 69.0f / 255.
 static glm::vec4 cube_amb( 81.0f / 255.0f, 96.0f / 255.0f, 67.0f / 255.0f, 1.00f );
 static glm::vec4 cube_diffuse( 124.0f / 255.0f, 150.0f / 255.0f, 89.0f / 255.0f, 1.00f );
 
-static glm::vec4 basket_ambdiffuse( 141.0f / 255.0f, 112.0f / 255.0f, 90.0f / 255.0f, 1.00f );
+static glm::vec4 plate_amb( 253.0f / 255.0f, 253.0f / 255.0f, 253.0f / 255.0f, 1.00f );
+static glm::vec4 plate_diffuse( 253.0f / 255.0f, 253.0f / 255.0f, 253.0f / 255.0f, 1.00f );
+
+static glm::vec4 bar_amb( 220.0f / 255.0f, 180.0f / 255.0f, 115.0f / 255.0f, 1.00f );
+static glm::vec4 bar_diffuse( 220.0f / 255.0f, 180.0f / 255.0f, 115.0f / 255.0f, 1.00f );
+
+static glm::vec4 napkin_ambdiffuse( 160.0f / 255.0f, 145.0f / 255.0f, 120.0f / 255.0f, 1.00f );
+static glm::vec4 fork_ambdiffuse( 141.0f / 255.0f, 112.0f / 255.0f, 90.0f / 255.0f, 1.00f );
+
+static glm::vec4 lemon_ambdiffuse( 255.0f / 255.0f, 245.0f / 255.0f, 20.0f / 255.0f, 1.00f );
+
+static glm::vec4 basket_ambdiffuse( 160.0f / 255.0f, 145.0f / 255.0f, 120.0f / 255.0f, 1.00f );
 
 
 // Add any global definitions and/or variables you need here.
@@ -125,7 +136,7 @@ void initTextures( void )
 /// @param obj            The object type of the object being drawn
 /// @param usingTextures  Are we texture-mapping this object?
 ///
-void setMaterials( GLuint program, Object obj, bool usingTextures )
+void setMaterials( GLuint program, Object obj, bool usingTextures, int index )
 {
     ///////////////////////////////////////////////////
     // CODE COMMON TO PHONG SHADING AND TEXTURE MAPPING
@@ -149,6 +160,7 @@ void setMaterials( GLuint program, Object obj, bool usingTextures )
         glUniform1f( loc, specExp[Teapot] );
         break;
     case Cube:
+    default:
         glUniform1f( loc, specExp[Cube] );
         break;
     }
@@ -213,12 +225,43 @@ void setMaterials( GLuint program, Object obj, bool usingTextures )
             break;
 
         case Cube:
-            if( aloc >= 0 ) {
-                glUniform4fv( aloc, 1, glm::value_ptr(cube_amb) );
+            if (index == 0) {
+                if( aloc >= 0 ) {
+                    glUniform4fv( aloc, 1, glm::value_ptr(cube_amb) );
+                }
+                if( dloc >= 0 ) {
+                    glUniform4fv( dloc, 1, glm::value_ptr(cube_diffuse) );
+                }
             }
-            if( dloc >= 0 ) {
-                glUniform4fv( dloc, 1, glm::value_ptr(cube_diffuse) );
+
+            if (index == 1) {
+                if( aloc >= 0 ) {
+                    glUniform4fv( aloc, 1, glm::value_ptr(plate_amb) );
+                }
+                if( dloc >= 0 ) {
+                    glUniform4fv( dloc, 1, glm::value_ptr(plate_diffuse) );
+                }
             }
+
+
+            if (index == 2) {
+                if( aloc >= 0 ) {
+                    glUniform4fv( aloc, 1, glm::value_ptr(napkin_ambdiffuse) );
+                }
+                if( dloc >= 0 ) {
+                    glUniform4fv( dloc, 1, glm::value_ptr(napkin_ambdiffuse) );
+                }
+            }
+
+            if (index > 2) {
+                if( aloc >= 0 ) {
+                    glUniform4fv( aloc, 1, glm::value_ptr(bar_amb) );
+                }
+                if( dloc >= 0 ) {
+                    glUniform4fv( dloc, 1, glm::value_ptr(bar_diffuse) );
+                }
+            }
+
             break;
 
         case Basket:
@@ -227,6 +270,16 @@ void setMaterials( GLuint program, Object obj, bool usingTextures )
             }
             if( dloc >= 0 ) {
                 glUniform4fv( dloc, 1, glm::value_ptr(basket_ambdiffuse) );
+            }
+            break;
+
+
+        case Sphere:
+            if( aloc >= 0 ) {
+                glUniform4fv( aloc, 1, glm::value_ptr(lemon_ambdiffuse) );
+            }
+            if( dloc >= 0 ) {
+                glUniform4fv( dloc, 1, glm::value_ptr(lemon_ambdiffuse) );
             }
             break;
         }

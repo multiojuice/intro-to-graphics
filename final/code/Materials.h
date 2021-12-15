@@ -42,6 +42,6 @@ void initTextures( void );
 /// @param obj            The object type of the object being drawn
 /// @param usingTextures  Are we texture-mapping this object?
 ///
-void setMaterials( GLuint program, Object obj, bool usingTextures );
+void setMaterials( GLuint program, Object obj, bool usingTextures , int index);
 
 #endif 

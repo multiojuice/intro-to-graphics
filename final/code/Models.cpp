@@ -30,6 +30,7 @@
 #include "QuadData.h"
 #include "TeapotData.h"
 #include "Cube10.h"
+#include "Sphere20.h"
 
 using namespace std;
 
@@ -234,10 +235,34 @@ static void createTeapot( Canvas &C )
 static void makeBasket( Canvas &C )
 {
     for( int i = 0; i < basketElementsLen - 2; i += 3 ) {
+        Vertex p1 = basketVerts[ basketElements[i] ];
+        Vertex p2 = basketVerts[ basketElements[i+1] ];
+        Vertex p3 = basketVerts[ basketElements[i+2] ];
+
+        Normal norm = calculateNormal(p1, p2, p3);
         C.addTriangleWithNorms(
-          basketVerts[ basketElements[i] ],   basketNorms[ basketNormIx[i] ],
-          basketVerts[ basketElements[i+1] ], basketNorms[ basketNormIx[i+1] ],
-          basketVerts[ basketElements[i+2] ], basketNorms[ basketNormIx[i+2] ]
+          p1,   norm,
+          p2, norm,
+          p3, norm 
+        );
+
+    }
+}
+
+static void makeSphere( Canvas &C )
+{
+    for( int i = 0; i < sphereElementsLength - 2; i += 3 ) {
+        Vertex p1 = sphereVertices[ sphereElements[i] ];
+        Vertex p2 = sphereVertices[ sphereElements[i+1] ];
+        Vertex p3 = sphereVertices[ sphereElements[i+2] ];
+        Normal n1 = {p1.x, p1.y, p1.z};
+        Normal n2 = {p2.x, p2.y, p2.z};
+        Normal n3 = {p3.x, p3.y, p3.z};
+        Normal norm = calculateNormal(p1, p2, p3);
+        C.addTriangleWithNorms(
+          p1, n1  ,
+          p2, n2,
+          p3, n3 
         );
 
     }
@@ -268,6 +293,7 @@ void createObject( Canvas &C, Object obj, BufferSet &buf )
     case Teapot:    createTeapot( C );     break;
     case Cube:      makeCube( C ); break;
     case Basket:      makeBasket( C ); break;
+    case Sphere:      makeSphere( C ); break;
     }
 
     // create the buffers for the object
